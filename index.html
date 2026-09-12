@@ -170,15 +170,14 @@ body.dark .bn-item.active{color:#fff;}
 .modal-tags{display:flex;gap:6px;flex-wrap:wrap;}
 .modal-tag{background:rgba(255,255,255,0.15);font-size:10.5px;font-weight:600;padding:4px 11px;border-radius:10px;}
 .modal-body{padding:20px 22px 26px;}
-.modal-label{font-size:12.5px;font-weight:700;color:var(--navy);margin-bottom:6px;margin-top:14px;}
+.modal-label{font-size:12.5px;font-weight:700;color:var(--navy);margin-bottom:6px;}
 body.dark .modal-label{color:#fff;}
-.modal-desc{font-size:12.5px;color:var(--text-dim);line-height:1.7;word-wrap:break-word;overflow-wrap:break-word;white-space:pre-wrap;}
-.modal-info-row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:12.5px;}
-.modal-info-row .k{color:var(--text-dim);flex-shrink:0;min-width:100px;}
-.modal-info-row .v{font-weight:600;text-align:right;word-wrap:break-word;overflow-wrap:break-word;word-break:break-word;flex:1;}
-.modal-info-row .v a{color:var(--green);text-decoration:underline;}
+.modal-desc{font-size:12.5px;color:var(--text-dim);line-height:1.7;margin-bottom:18px;}
+.modal-info-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:12.5px;}
+.modal-info-row .k{color:var(--text-dim);}
+.modal-info-row .v{font-weight:600;}
 .modal-btn-primary{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--green);color:#fff;font-weight:700;font-size:14px;padding:14px;border-radius:12px;margin:18px 0 10px;cursor:pointer;border:0;width:100%;font-family:inherit;}
-.modal-btn-secondary{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--bg);border:1px solid var(--border);color:var(--navy);font-weight:600;font-size:12.5px;padding:12px;border-radius:12px;cursor:pointer;width:100%;font-family:inherit;margin-top:8px;}
+.modal-btn-secondary{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--bg);border:1px solid var(--border);color:var(--navy);font-weight:600;font-size:12.5px;padding:12px;border-radius:12px;cursor:pointer;width:100%;font-family:inherit;}
 body.dark .modal-btn-secondary{color:#fff;}
 .redirect-wrap{padding:40px 26px;text-align:center;}
 .redirect-icon{width:60px;height:60px;border-radius:50%;background:var(--green-light);color:var(--green);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 18px;}
@@ -186,6 +185,7 @@ body.dark .modal-btn-secondary{color:#fff;}
 .redirect-text{font-size:12.5px;color:var(--text-dim);line-height:1.6;margin-bottom:20px;}
 .redirect-url{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:11px 16px;font-size:12px;color:var(--navy);margin-bottom:22px;font-family:'Inter',sans-serif;word-break:break-all;}
 body.dark .redirect-url{color:#fff;}
+
 @media(max-width:600px){.np-grid{grid-template-columns:repeat(2,1fr);}}
 </style>
 </head>
@@ -374,571 +374,54 @@ body.dark .redirect-url{color:#fff;}
 </div>
 
 <script>
-/* ============================================================
-   Apps Script URL — সরাসরি আপনার শিটের সাথে যুক্ত
-   ============================================================ */
+/* =========================================================
+   ১) আপনার Apps Script URL এখানে বসান
+   ========================================================= */
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzEuKc60X6KDIC3dmjUmxA_0XNbivriwKbm3ZGCol9oi0EkfEpNuABibklarI8gLHfn/exec";
+
+/* =========================================================
+   ২) ব্যাকআপ: Apps Script কাজ না করলে সরাসরি Google Sheet CSV
+      (Sheet ID দিলে ফলব্যাক হিসেবে ব্যবহার হবে)
+   ========================================================= */
+const SHEET_ID = ""; // আপনার Google Sheet এর ID (দরকার হলে)
+const TAB_NAME = "Form Responses 1";
+
 const FORM_URL = "https://forms.gle/378WKzkQqqkqBRjt5";
 const PER_PAGE = 20;
 
-/* ============================================================
-   আপনার শিটের EXACT কলাম নাম — হুবহু ম্যাচ করবে
-   ============================================================ */
-const COLUMNS = {
-  timestamp:   "Timestamp",
-  id:          "ID",
-  name:        "Name",
-  regno:       "RegNo",
-  language:    "Language",
-  frequency:   "Frequency",
-  category:    "Category",
-  country:     "Country",
-  division:    "Division",
-  district:    "District",
-  upazila:     "Upazila",
-  website:     "Website",
-  logo:        "LogoURL",
-  description: "Description",
-  tags:        "Tags",
-  pdf:         "PDF",
-  sender:      "Sender",
-  mobile:      "Mobile/Email",
-  about:       "About",
-  status:      "Status"
+/* =========================================================
+   ৩) কলাম নাম ম্যাপিং — অনেক নামের ভ্যারিয়েশন হ্যান্ডেল করবে
+   ========================================================= */
+const COLUMN_ALIASES = {
+  id:          ["ID","Id","id","Sl","SL","SlNo","Serial"],
+  regno:       ["RegNo","Reg No","RegistrationNo","Registration No","Reg"],
+  name:        ["Name","name","NewspaperName","Newspaper Name","Paper Name","PaperName","Title"],
+  language:    ["Language","language","Lang"],
+  frequency:   ["Frequency","frequency","Type","PublicationType","Publication Type"],
+  category:    ["Category","category","Cat","Type"],
+  country:     ["Country","country"],
+  division:    ["Division","division","Div"],
+  district:    ["District","district","Dist","Zila","Jela"],
+  upazila:     ["Upazila","upazila","Thana","Upazilla"],
+  logo:        ["LogoURL","Logo URL","Logo","logo","Image","ImageURL","Image URL"],
+  description: ["Description","description","Desc","About","Details"],
+  website:     ["Website","website","URL","Link","Site","Web"],
+  tags:        ["Tags","tags","Tag"],
+  pdf:         ["Pdf","PDF","pdf"],
+  status:      ["Status","status","State"]
 };
 
-/* ============================================================
-   State
-   ============================================================ */
 let allNewspapers = [];
 let filteredNewspapers = [];
 let currentPage = 1;
 let activeFrequency = "";
 let activeCategoryLabel = "";
 
-/* ============================================================
-   ফিল্ড রিডার — ট্রিম + খালি চেক
-   ============================================================ */
+/* =========================================================
+   ৪) একটি item থেকে key অনুযায়ী মান বের করার ফাংশন
+   ========================================================= */
 function getField(item, key){
   if(!item) return "";
-  const colName = COLUMNS[key];
-  if(!colName) return "";
-  let v = item[colName];
-  /* কিছু ক্ষেত্রে কলাম নামে ট্রেইলিং স্পেস থাকতে পারে */
-  if(v === undefined || v === null){
-    const foundKey = Object.keys(item).find(k => k.trim() === colName.trim());
-    if(foundKey) v = item[foundKey];
-  }
-  if(v === undefined || v === null) return "";
-  return String(v).trim();
-}
-
-/* Status চেক — live/live/active সবই গ্রহণ করবে। খালি স্ট্যাটাসও দেখাবে না */
-function isLive(item){
-  const s = getField(item, "status").toLowerCase();
-  if(!s) return false;
-  return s === "live" || s === "active" || s === "yes" || s === "approved" || s === "১" || s === "true";
-}
-
-/* ============================================================
-   Data Load
-   ============================================================ */
-async function loadNewspapers(){
-  const resultCountEl = document.getElementById("resultCount");
-  try{
-    const res = await fetch(APPS_SCRIPT_URL, { method: "GET", redirect: "follow" });
-    if(!res.ok) throw new Error("HTTP " + res.status);
-    const data = await res.json();
-    if(!Array.isArray(data)) throw new Error("Not an array");
-    /* ফিল্টার: live status থাকলে তবেই দেখাবে */
-    allNewspapers = data.filter(item => isLive(item));
-    if(allNewspapers.length === 0){
-      resultCountEl.textContent = "কোনো পত্রিকা পাওয়া যায়নি।";
-    }
-  }catch(err){
-    console.error("Data load error:", err);
-    allNewspapers = [];
-    resultCountEl.textContent = "তথ্য লোড করা যাচ্ছে না। একটু পর আবার চেষ্টা করুন।";
-  }
-
-  buildFrequencyChips();
-  buildCategoryChips();
-  buildCategoryDatalist();
-  buildDivisionCards();
-  buildFilterOptions();
-  buildPopularSection();
-  buildFooterCategories();
-  applyFilters();
-}
-
-/* ============================================================
-   Unique values
-   ============================================================ */
-function uniqueValues(field){
-  const values = new Set();
-  allNewspapers.forEach(item=>{
-    const v = getField(item, field);
-    if(v) values.add(v);
-  });
-  return Array.from(values).sort((a,b)=>String(a).localeCompare(String(b),"bn"));
-}
-
-/* ============================================================
-   Frequency chips
-   ============================================================ */
-function buildFrequencyChips(){
-  const container = document.getElementById("frequencyChips");
-  uniqueValues("frequency").forEach(freq=>{
-    const chip = document.createElement("div");
-    chip.className = "cat-chip";
-    chip.textContent = freq;
-    chip.addEventListener("click", ()=>{
-      container.querySelectorAll(".cat-chip").forEach(c=>c.classList.remove("active"));
-      chip.classList.add("active");
-      activeFrequency = freq;
-      activeCategoryLabel = freq + " পত্রিকা";
-      applyFilters();
-      showCategoryHeader();
-    });
-    container.appendChild(chip);
-  });
-  container.querySelector(".cat-chip[data-freq='']").addEventListener("click", function(){
-    container.querySelectorAll(".cat-chip").forEach(c=>c.classList.remove("active"));
-    this.classList.add("active");
-    activeFrequency = "";
-    hideCategoryHeaderIfNoFilter();
-    applyFilters();
-  });
-}
-
-/* ============================================================
-   Category chips
-   ============================================================ */
-function buildCategoryChips(){
-  const container = document.getElementById("categoryChips");
-  uniqueValues("category").forEach(cat=>{
-    const chip = document.createElement("div");
-    chip.className = "cat-chip";
-    chip.textContent = cat;
-    chip.addEventListener("click", ()=>{
-      container.querySelectorAll(".cat-chip").forEach(c=>c.classList.remove("active"));
-      chip.classList.add("active");
-      document.getElementById("filterCategory").value = cat;
-      activeCategoryLabel = cat + " ক্যাটাগরির পত্রিকা";
-      applyFilters();
-      showCategoryHeader();
-    });
-    container.appendChild(chip);
-  });
-  container.querySelector(".cat-chip[data-cat='']").addEventListener("click", function(){
-    container.querySelectorAll(".cat-chip").forEach(c=>c.classList.remove("active"));
-    this.classList.add("active");
-    document.getElementById("filterCategory").value = "";
-    hideCategoryHeaderIfNoFilter();
-    applyFilters();
-  });
-}
-
-/* ============================================================
-   Category datalist (search suggest)
-   ============================================================ */
-function buildCategoryDatalist(){
-  const datalist = document.getElementById("categoryList");
-  datalist.innerHTML = "";
-  uniqueValues("category").forEach(cat=>{
-    const opt = document.createElement("option");
-    opt.value = cat;
-    datalist.appendChild(opt);
-  });
-}
-
-/* ============================================================
-   Division cards
-   ============================================================ */
-function buildDivisionCards(){
-  const container = document.getElementById("divisionGrid");
-  container.innerHTML = "";
-  uniqueValues("division").forEach(div=>{
-    const count = allNewspapers.filter(item=>getField(item,"division")===div).length;
-    const card = document.createElement("div");
-    card.className = "div-card";
-    card.innerHTML = `<div class="name">${escapeHtml(div)}</div><div class="count">${count}টি পত্রিকা</div>`;
-    card.addEventListener("click", ()=>{
-      document.querySelectorAll(".div-card").forEach(c=>c.classList.remove("active"));
-      card.classList.add("active");
-      document.getElementById("filterDivision").value = div;
-      activeCategoryLabel = div + " বিভাগের পত্রিকা";
-      applyFilters();
-      showCategoryHeader();
-      document.getElementById("newspaperSection").scrollIntoView({behavior:"smooth"});
-    });
-    container.appendChild(card);
-  });
-}
-
-/* ============================================================
-   Filter dropdowns (Language, Division)
-   ============================================================ */
-function buildFilterOptions(){
-  fillSelect("filterLanguage", uniqueValues("language"), "ভাষা (সব)");
-  fillSelect("filterDivision", uniqueValues("division"), "বিভাগ (সব)");
-  fillSelect("chcDivision", uniqueValues("division"), "বিভাগ ▾");
-  fillSelect("chcLanguage", uniqueValues("language"), "ভাষা ▾");
-}
-
-function fillSelect(id, values, placeholder){
-  const select = document.getElementById(id);
-  select.innerHTML = `<option value="">${placeholder}</option>`;
-  values.forEach(v=>{
-    const opt = document.createElement("option");
-    opt.value = v;
-    opt.textContent = v;
-    select.appendChild(opt);
-  });
-}
-
-/* ============================================================
-   Popular (প্রথম ১০টি)
-   ============================================================ */
-function buildPopularSection(){
-  const container = document.getElementById("popularScroll");
-  container.innerHTML = "";
-  const popular = allNewspapers.slice(0, 10);
-  if(popular.length === 0){ document.getElementById("popularSection").style.display = "none"; return; }
-  document.getElementById("popularSection").style.display = "";
-  popular.forEach(item=>{
-    const name = getField(item,"name") || "নাম নেই";
-    const logo = getField(item,"logo");
-    const card = document.createElement("div");
-    card.className = "popular-card";
-    card.innerHTML = `
-      <div class="popular-cover">${logo ? `<img src="${escapeAttr(logo)}" alt="${escapeAttr(name)}" onerror="this.style.display='none';this.parentNode.textContent='${escapeAttr(name.charAt(0))}'"/>` : escapeHtml(name.charAt(0))}</div>
-      <div class="popular-name">${escapeHtml(name)}</div>
-    `;
-    card.addEventListener("click", ()=>openDetailsModal(item));
-    container.appendChild(card);
-  });
-}
-
-/* ============================================================
-   Footer categories
-   ============================================================ */
-function buildFooterCategories(){
-  const list = document.getElementById("footerCategoryList");
-  const cats = uniqueValues("category").slice(0,6);
-  list.innerHTML = "";
-  if(cats.length === 0){ list.innerHTML = "<li>শীঘ্রই যোগ হবে</li>"; return; }
-  cats.forEach(c=>{
-    const li = document.createElement("li");
-    li.textContent = c;
-    list.appendChild(li);
-  });
-}
-
-/* ============================================================
-   Category header card
-   ============================================================ */
-function showCategoryHeader(){
-  const card = document.getElementById("categoryHeaderCard");
-  card.classList.add("show");
-  document.getElementById("chcTitle").textContent = activeCategoryLabel || "পত্রিকা তালিকা";
-  document.getElementById("chcLogo").textContent = (activeCategoryLabel || "প").charAt(0);
-  updateCategoryHeaderCount();
-}
-function hideCategoryHeaderIfNoFilter(){
-  const cat = document.getElementById("filterCategory").value;
-  const div = document.getElementById("filterDivision").value;
-  if(!activeFrequency && !cat && !div){
-    document.getElementById("categoryHeaderCard").classList.remove("show");
-  }
-}
-function updateCategoryHeaderCount(){
-  document.getElementById("chcCount").textContent = `${filteredNewspapers.length}টি পত্রিকা পাওয়া গেছে`;
-}
-
-/* ============================================================
-   Card Render
-   ============================================================ */
-function renderPage(){
-  const grid = document.getElementById("newspaperGrid");
-  const resultCountEl = document.getElementById("resultCount");
-  grid.innerHTML = "";
-
-  if(filteredNewspapers.length === 0){
-    grid.innerHTML = `<div class="empty-state">দুঃখিত, কোনো পত্রিকা পাওয়া যায়নি। অন্য কিছু খুঁজে দেখুন।</div>`;
-    document.getElementById("pagination").innerHTML = "";
-    resultCountEl.textContent = "কোনো ফলাফল নেই";
-    updateCategoryHeaderCount();
-    return;
-  }
-
-  const start = (currentPage-1)*PER_PAGE;
-  const pageItems = filteredNewspapers.slice(start, start+PER_PAGE);
-
-  pageItems.forEach(item=>{
-    const name = getField(item,"name") || "নাম নেই";
-    const lang = getField(item,"language");
-    const freq = getField(item,"frequency");
-    const cat  = getField(item,"category");
-    const div  = getField(item,"division");
-    const dist = getField(item,"district");
-    const logo = getField(item,"logo");
-    const desc = getField(item,"description");
-
-    const card = document.createElement("div");
-    card.className = "np-card";
-    card.innerHTML = `
-      <div class="np-cover">
-        ${logo ? `<img src="${escapeAttr(logo)}" alt="${escapeAttr(name)}" onerror="this.style.display='none';this.parentNode.insertAdjacentText('afterbegin','${escapeAttr(name.charAt(0))}')"/>` : escapeHtml(name.charAt(0))}
-        ${freq ? `<span class="np-freq-tag">${escapeHtml(freq)}</span>` : ""}
-      </div>
-      <div class="np-info">
-        <div class="np-name">${escapeHtml(name)}</div>
-        <div class="np-badges">
-          ${cat ? `<span class="np-badge">${escapeHtml(cat)}</span>`:""}
-          ${lang ? `<span class="np-badge lang">${escapeHtml(lang)}</span>`:""}
-        </div>
-        ${(div||dist) ? `<div class="np-loc">📍 ${[dist,div].filter(Boolean).map(escapeHtml).join(", ")}</div>` : ""}
-        ${desc ? `<div class="np-desc">${escapeHtml(desc)}</div>` : ""}
-      </div>
-    `;
-    card.addEventListener("click", ()=>openDetailsModal(item));
-    grid.appendChild(card);
-  });
-
-  resultCountEl.textContent = `মোট ${filteredNewspapers.length}টি পত্রিকা পাওয়া গেছে`;
-  updateCategoryHeaderCount();
-  renderPagination();
-}
-
-/* ============================================================
-   Pagination
-   ============================================================ */
-function renderPagination(){
-  const totalPages = Math.ceil(filteredNewspapers.length / PER_PAGE);
-  const container = document.getElementById("pagination");
-  container.innerHTML = "";
-  if(totalPages <= 1) return;
-  for(let i=1;i<=totalPages;i++){
-    const btn = document.createElement("div");
-    btn.className = "page-btn" + (i===currentPage ? " active" : "");
-    btn.textContent = i;
-    btn.addEventListener("click", ()=>{
-      currentPage = i;
-      renderPage();
-      document.getElementById("newspaperSection").scrollIntoView({behavior:"smooth"});
-    });
-    container.appendChild(btn);
-  }
-}
-
-/* ============================================================
-   Filter logic
-   ============================================================ */
-function applyFilters(){
-  const q = (document.getElementById("searchInput").value || "").trim().toLowerCase();
-  const chcQ = (document.getElementById("chcSearchInput").value || "").trim().toLowerCase();
-  const lang = document.getElementById("filterLanguage").value || document.getElementById("chcLanguage").value;
-  const cat  = (document.getElementById("filterCategory").value || "").trim();
-  const div  = document.getElementById("filterDivision").value || document.getElementById("chcDivision").value;
-  const sort = document.getElementById("chcSort").value;
-  const query = q || chcQ;
-
-  filteredNewspapers = allNewspapers.filter(item=>{
-    const name = getField(item,"name").toLowerCase();
-    const dist = getField(item,"district").toLowerCase();
-    const upazila = getField(item,"upazila").toLowerCase();
-    const tags = getField(item,"tags").toLowerCase();
-
-    if(query && !name.includes(query) && !dist.includes(query) && !upazila.includes(query) && !tags.includes(query)) return false;
-    if(lang && getField(item,"language") !== lang) return false;
-    if(cat && getField(item,"category") !== cat) return false;
-    if(div && getField(item,"division") !== div) return false;
-    if(activeFrequency && getField(item,"frequency") !== activeFrequency) return false;
-    return true;
-  });
-
-  if(sort === "az") filteredNewspapers.sort((a,b)=>getField(a,"name").localeCompare(getField(b,"name"),"bn"));
-  if(sort === "za") filteredNewspapers.sort((a,b)=>getField(b,"name").localeCompare(getField(a,"name"),"bn"));
-
-  currentPage = 1;
-  renderPage();
-}
-
-/* ============================================================
-   Event listeners
-   ============================================================ */
-document.getElementById("searchInput").addEventListener("input", applyFilters);
-document.getElementById("searchBtn").addEventListener("click", applyFilters);
-document.getElementById("filterLanguage").addEventListener("change", applyFilters);
-document.getElementById("filterCategory").addEventListener("input", applyFilters);
-document.getElementById("filterDivision").addEventListener("change", applyFilters);
-document.getElementById("chcSearchInput").addEventListener("input", applyFilters);
-document.getElementById("chcDivision").addEventListener("change", applyFilters);
-document.getElementById("chcLanguage").addEventListener("change", applyFilters);
-document.getElementById("chcSort").addEventListener("change", applyFilters);
-
-/* ============================================================
-   Details Modal — সব ফিল্ড দেখাবে, ID ও Mobile ছাড়া
-   ============================================================ */
-function openDetailsModal(item){
-  const name = getField(item,"name") || "নাম নেই";
-  const lang = getField(item,"language");
-  const freq = getField(item,"frequency");
-  const cat  = getField(item,"category");
-  const country = getField(item,"country");
-  const div  = getField(item,"division");
-  const dist = getField(item,"district");
-  const upazila = getField(item,"upazila");
-  const logo = getField(item,"logo");
-  const desc = getField(item,"description");
-  const site = getField(item,"website");
-  const regno = getField(item,"regno");
-  const tags = getField(item,"tags");
-  const pdf = getField(item,"pdf");
-  const sender = getField(item,"sender");
-
-  const modalBox = document.getElementById("modalBox");
-  modalBox.innerHTML = `
-    <div class="modal-close" onclick="closeModal()">✕</div>
-    <div class="modal-hero">
-      <div class="modal-logo">${logo ? `<img src="${escapeAttr(logo)}" alt="${escapeAttr(name)}" onerror="this.style.display='none';this.parentNode.textContent='${escapeAttr(name.charAt(0))}'"/>` : escapeHtml(name.charAt(0))}</div>
-      <div class="modal-name">${escapeHtml(name)}</div>
-      <div class="modal-tags">
-        ${cat ? `<span class="modal-tag">${escapeHtml(cat)}</span>`:""}
-        ${freq ? `<span class="modal-tag">${escapeHtml(freq)}</span>`:""}
-        ${lang ? `<span class="modal-tag">${escapeHtml(lang)}</span>`:""}
-        ${div ? `<span class="modal-tag">${escapeHtml(div)} বিভাগ</span>`:""}
-      </div>
-    </div>
-    <div class="modal-body">
-      ${desc ? `<div class="modal-label">সংক্ষিপ্ত বিবরণ</div><div class="modal-desc">${escapeHtml(desc)}</div>` : ""}
-
-      ${regno ? `<div class="modal-info-row"><div class="k">রেজিস্ট্রেশন নং</div><div class="v">${escapeHtml(regno)}</div></div>`:""}
-      ${cat ? `<div class="modal-info-row"><div class="k">ক্যাটাগরি</div><div class="v">${escapeHtml(cat)}</div></div>`:""}
-      ${freq ? `<div class="modal-info-row"><div class="k">প্রকাশনার ধরন</div><div class="v">${escapeHtml(freq)}</div></div>`:""}
-      ${lang ? `<div class="modal-info-row"><div class="k">ভাষা</div><div class="v">${escapeHtml(lang)}</div></div>`:""}
-      ${country ? `<div class="modal-info-row"><div class="k">দেশ</div><div class="v">${escapeHtml(country)}</div></div>`:""}
-      ${div ? `<div class="modal-info-row"><div class="k">বিভাগ</div><div class="v">${escapeHtml(div)}</div></div>`:""}
-      ${dist ? `<div class="modal-info-row"><div class="k">জেলা</div><div class="v">${escapeHtml(dist)}</div></div>`:""}
-      ${upazila ? `<div class="modal-info-row"><div class="k">উপজেলা</div><div class="v">${escapeHtml(upazila)}</div></div>`:""}
-      ${tags ? `<div class="modal-info-row"><div class="k">ট্যাগ</div><div class="v">${escapeHtml(tags)}</div></div>`:""}
-      ${site ? `<div class="modal-info-row"><div class="k">ওয়েবসাইট</div><div class="v"><a href="${escapeAttr(site)}" target="_blank" rel="noopener">${escapeHtml(cleanUrl(site))}</a></div></div>`:""}
-      ${sender ? `<div class="modal-info-row"><div class="k">প্রেরক</div><div class="v">${escapeHtml(sender)}</div></div>`:""}
-      ${pdf ? `<div class="modal-info-row"><div class="k">পিডিএফ</div><div class="v"><a href="${escapeAttr(pdf)}" target="_blank" rel="noopener">পিডিএফ দেখুন</a></div></div>`:""}
-
-      <button class="modal-btn-primary" onclick="openRedirectPanel('${escapeAttr(name)}','${escapeAttr(site)}')">📰 পত্রিকাটি পড়ুন</button>
-      <a class="modal-btn-secondary" href="${FORM_URL}" target="_blank" rel="noopener">তথ্য আপডেটের জন্য আবেদন করুন</a>
-    </div>
-  `;
-  document.getElementById("modalOverlay").classList.add("open");
-  document.body.style.overflow = "hidden";
-}
-
-function cleanUrl(u){
-  try { return String(u).replace(/^https?:\/\//,"").replace(/\/$/,""); }
-  catch(e){ return u; }
-}
-
-function openRedirectPanel(name, site){
-  const displayUrl = site ? cleanUrl(site) : "";
-  const modalBox = document.getElementById("modalBox");
-  modalBox.innerHTML = `
-    <div class="modal-close" onclick="closeModal()">✕</div>
-    <div class="redirect-wrap">
-      <div class="redirect-icon">↗</div>
-      <div class="redirect-title">${escapeHtml(name)}-তে নিয়ে যাওয়া হচ্ছে</div>
-      <div class="redirect-text">আপনি এখন পত্রিকার নিজস্ব অফিসিয়াল ওয়েবসাইটে যাচ্ছেন। বাংলাদেশ পত্রিকা এই কন্টেন্টের মালিক বা প্রকাশক নয়।</div>
-      ${displayUrl ? `<div class="redirect-url">${escapeHtml(displayUrl)}</div>` : ""}
-      <button class="modal-btn-primary" style="margin:0;" onclick="goToWebsite('${escapeAttr(site)}')">এগিয়ে যান</button>
-    </div>
-  `;
-}
-
-function goToWebsite(site){
-  if(site) window.open(site, "_blank", "noopener");
-  closeModal();
-}
-
-function closeModal(){
-  document.getElementById("modalOverlay").classList.remove("open");
-  document.body.style.overflow = "";
-}
-document.getElementById("modalOverlay").addEventListener("click", (e)=>{
-  if(e.target.id === "modalOverlay") closeModal();
-});
-
-/* ============================================================
-   Menu / Dark / Language
-   ============================================================ */
-const hamburgerBtn = document.getElementById("hamburgerBtn");
-const sideMenu = document.getElementById("sideMenu");
-const menuOverlay = document.getElementById("menuOverlay");
-hamburgerBtn.addEventListener("click", ()=>{ sideMenu.classList.add("open"); menuOverlay.classList.add("open"); });
-menuOverlay.addEventListener("click", closeMenu);
-function closeMenu(){ sideMenu.classList.remove("open"); menuOverlay.classList.remove("open"); }
-
-const darkModeToggle = document.getElementById("darkModeToggle");
-darkModeToggle.addEventListener("click", ()=>{
-  document.body.classList.toggle("dark");
-  darkModeToggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
-});
-
-const langBtn = document.getElementById("langBtn");
-const langDropdown = document.getElementById("langDropdown");
-langBtn.addEventListener("click", (e)=>{ e.stopPropagation(); langDropdown.classList.toggle("open"); });
-document.addEventListener("click", ()=>{ langDropdown.classList.remove("open"); });
-
-function googleTranslateElementInit(){
-  new google.translate.TranslateElement({pageLanguage:'bn', includedLanguages:'bn,en,ar', autoDisplay:false}, 'google_translate_element');
-}
-function changeLanguage(lang){
-  const combo = document.querySelector('.goog-te-combo');
-  if(combo){
-    combo.value = lang;
-    combo.dispatchEvent(new Event('change'));
-  }
-  langDropdown.classList.remove("open");
-}
-
-/* ============================================================
-   Bottom nav
-   ============================================================ */
-document.querySelectorAll(".bn-item").forEach(item=>{
-  item.addEventListener("click", ()=>{
-    document.querySelectorAll(".bn-item").forEach(i=>i.classList.remove("active"));
-    item.classList.add("active");
-    const target = item.dataset.target;
-    if(target === "top") window.scrollTo({top:0, behavior:"smooth"});
-    if(target === "category") document.getElementById("categoryChips").scrollIntoView({behavior:"smooth", block:"center"});
-    if(target === "division") document.getElementById("divisionGrid").scrollIntoView({behavior:"smooth", block:"center"});
-    if(target === "saved") alert("সংরক্ষণ (Saved) ফিচারটি শীঘ্রই যুক্ত করা হবে।");
-  });
-});
-
-/* ============================================================
-   HTML escape helpers
-   ============================================================ */
-function escapeHtml(str){
-  if(str === undefined || str === null) return "";
-  return String(str)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#39;");
-}
-function escapeAttr(str){
-  return escapeHtml(str).replace(/\n/g," ").replace(/\r/g,"");
-}
-
-/* ============================================================
-   Init
-   ============================================================ */
-document.getElementById("year").textContent = new Date().getFullYear();
-loadNewspapers();
-</script>
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-</body>
-</html>
+  const aliases = COLUMN_ALIASES[key] || [key];
+  for(const alias of aliases){
+    if(item[alias] !==
