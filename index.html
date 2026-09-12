@@ -170,14 +170,15 @@ body.dark .bn-item.active{color:#fff;}
 .modal-tags{display:flex;gap:6px;flex-wrap:wrap;}
 .modal-tag{background:rgba(255,255,255,0.15);font-size:10.5px;font-weight:600;padding:4px 11px;border-radius:10px;}
 .modal-body{padding:20px 22px 26px;}
-.modal-label{font-size:12.5px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.modal-label{font-size:12.5px;font-weight:700;color:var(--navy);margin-bottom:6px;margin-top:14px;}
 body.dark .modal-label{color:#fff;}
-.modal-desc{font-size:12.5px;color:var(--text-dim);line-height:1.7;margin-bottom:18px;}
-.modal-info-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:12.5px;}
-.modal-info-row .k{color:var(--text-dim);}
-.modal-info-row .v{font-weight:600;}
+.modal-desc{font-size:12.5px;color:var(--text-dim);line-height:1.7;word-wrap:break-word;overflow-wrap:break-word;white-space:pre-wrap;}
+.modal-info-row{display:flex;justify-content:space-between;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:12.5px;}
+.modal-info-row .k{color:var(--text-dim);flex-shrink:0;min-width:100px;}
+.modal-info-row .v{font-weight:600;text-align:right;word-wrap:break-word;overflow-wrap:break-word;word-break:break-word;flex:1;}
+.modal-info-row .v a{color:var(--green);text-decoration:underline;}
 .modal-btn-primary{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--green);color:#fff;font-weight:700;font-size:14px;padding:14px;border-radius:12px;margin:18px 0 10px;cursor:pointer;border:0;width:100%;font-family:inherit;}
-.modal-btn-secondary{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--bg);border:1px solid var(--border);color:var(--navy);font-weight:600;font-size:12.5px;padding:12px;border-radius:12px;cursor:pointer;width:100%;font-family:inherit;}
+.modal-btn-secondary{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--bg);border:1px solid var(--border);color:var(--navy);font-weight:600;font-size:12.5px;padding:12px;border-radius:12px;cursor:pointer;width:100%;font-family:inherit;margin-top:8px;}
 body.dark .modal-btn-secondary{color:#fff;}
 .redirect-wrap{padding:40px 26px;text-align:center;}
 .redirect-icon{width:60px;height:60px;border-radius:50%;background:var(--green-light);color:var(--green);display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 18px;}
@@ -185,7 +186,6 @@ body.dark .modal-btn-secondary{color:#fff;}
 .redirect-text{font-size:12.5px;color:var(--text-dim);line-height:1.6;margin-bottom:20px;}
 .redirect-url{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:11px 16px;font-size:12px;color:var(--navy);margin-bottom:22px;font-family:'Inter',sans-serif;word-break:break-all;}
 body.dark .redirect-url{color:#fff;}
-
 @media(max-width:600px){.np-grid{grid-template-columns:repeat(2,1fr);}}
 </style>
 </head>
@@ -374,434 +374,41 @@ body.dark .redirect-url{color:#fff;}
 </div>
 
 <script>
+/* ============================================================
+   Apps Script URL — সরাসরি আপনার শিটের সাথে যুক্ত
+   ============================================================ */
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzEuKc60X6KDIC3dmjUmxA_0XNbivriwKbm3ZGCol9oi0EkfEpNuABibklarI8gLHfn/exec";
 const FORM_URL = "https://forms.gle/378WKzkQqqkqBRjt5";
-const SHEET_ID = "";
-const TAB_NAME = "Form Responses 1";
 const PER_PAGE = 20;
 
+/* ============================================================
+   আপনার শিটের EXACT কলাম নাম — হুবহু ম্যাচ করবে
+   ============================================================ */
 const COLUMNS = {
-  id:"ID", regno:"RegNo", name:"Name", language:"Language", frequency:"Frequency",
-  category:"Category", country:"Country", division:"Division", district:"District",
-  upazila:"Upazila", logo:"LogoURL", description:"Description", website:"Website",
-  tags:"Tags", pdf:"Pdf", status:"Status"
+  timestamp:   "Timestamp",
+  id:          "ID",
+  name:        "Name",
+  regno:       "RegNo",
+  language:    "Language",
+  frequency:   "Frequency",
+  category:    "Category",
+  country:     "Country",
+  division:    "Division",
+  district:    "District",
+  upazila:     "Upazila",
+  website:     "Website",
+  logo:        "LogoURL",
+  description: "Description",
+  tags:        "Tags",
+  pdf:         "PDF",
+  sender:      "Sender",
+  mobile:      "Mobile/Email",
+  about:       "About",
+  status:      "Status"
 };
 
+/* ============================================================
+   State
+   ============================================================ */
 let allNewspapers = [];
-let filteredNewspapers = [];
-let currentPage = 1;
-let activeFrequency = "";
-let activeCategoryLabel = "";
-
-async function loadNewspapers(){
-  const resultCountEl = document.getElementById("resultCount");
-  try{
-    const url = APPS_SCRIPT_URL ? APPS_SCRIPT_URL : `https://opensheet.elk.sh/${SHEET_ID}/${encodeURIComponent(TAB_NAME)}`;
-    const res = await fetch(url);
-    if(!res.ok) throw new Error("load failed");
-    const data = await res.json();
-    if(!Array.isArray(data)) throw new Error("bad format");
-    allNewspapers = data;
-  }catch(err){
-    allNewspapers = [];
-    resultCountEl.textContent = "তথ্য লোড করা যাচ্ছে না। একটু পর আবার চেষ্টা করুন।";
-  }
-  allNewspapers = allNewspapers.filter(item => getField(item,"status").toLowerCase() === "live");
-  buildFrequencyChips();
-  buildCategoryChips();
-  buildCategoryDatalist();
-  buildDivisionCards();
-  buildFilterOptions();
-  buildPopularSection();
-  buildFooterCategories();
-  applyFilters();
-}
-
-function getField(item, key){
-  const value = item[COLUMNS[key]];
-  return (value === undefined || value === null) ? "" : String(value).trim();
-}
-function uniqueValues(field){
-  const values = new Set();
-  allNewspapers.forEach(item=>{ const v = getField(item, field); if(v) values.add(v); });
-  return Array.from(values).sort();
-}
-
-function buildFrequencyChips(){
-  const container = document.getElementById("frequencyChips");
-  uniqueValues("frequency").forEach(freq=>{
-    const chip = document.createElement("div");
-    chip.className = "cat-chip";
-    chip.textContent = freq;
-    chip.addEventListener("click", ()=>{
-      container.querySelectorAll(".cat-chip").forEach(c=>c.classList.remove("active"));
-      chip.classList.add("active");
-      activeFrequency = freq;
-      activeCategoryLabel = freq + " পত্রিকা";
-      applyFilters();
-      showCategoryHeader();
-    });
-    container.appendChild(chip);
-  });
-  container.querySelector(".cat-chip[data-freq='']").addEventListener("click", function(){
-    container.querySelectorAll(".cat-chip").forEach(c=>c.classList.remove("active"));
-    this.classList.add("active");
-    activeFrequency = "";
-    hideCategoryHeaderIfNoFilter();
-    applyFilters();
-  });
-}
-
-function buildCategoryChips(){
-  const container = document.getElementById("categoryChips");
-  uniqueValues("category").forEach(cat=>{
-    const chip = document.createElement("div");
-    chip.className = "cat-chip";
-    chip.textContent = cat;
-    chip.addEventListener("click", ()=>{
-      container.querySelectorAll(".cat-chip").forEach(c=>c.classList.remove("active"));
-      chip.classList.add("active");
-      document.getElementById("filterCategory").value = cat;
-      activeCategoryLabel = cat + " ক্যাটাগরির পত্রিকা";
-      applyFilters();
-      showCategoryHeader();
-    });
-    container.appendChild(chip);
-  });
-  container.querySelector(".cat-chip[data-cat='']").addEventListener("click", function(){
-    container.querySelectorAll(".cat-chip").forEach(c=>c.classList.remove("active"));
-    this.classList.add("active");
-    document.getElementById("filterCategory").value = "";
-    hideCategoryHeaderIfNoFilter();
-    applyFilters();
-  });
-}
-
-function buildCategoryDatalist(){
-  const datalist = document.getElementById("categoryList");
-  datalist.innerHTML = "";
-  uniqueValues("category").forEach(cat=>{
-    const opt = document.createElement("option");
-    opt.value = cat;
-    datalist.appendChild(opt);
-  });
-}
-
-function buildDivisionCards(){
-  const container = document.getElementById("divisionGrid");
-  container.innerHTML = "";
-  uniqueValues("division").forEach(div=>{
-    const count = allNewspapers.filter(item=>getField(item,"division")===div).length;
-    const card = document.createElement("div");
-    card.className = "div-card";
-    card.innerHTML = `<div class="name">${div}</div><div class="count">${count}টি পত্রিকা</div>`;
-    card.addEventListener("click", ()=>{
-      document.querySelectorAll(".div-card").forEach(c=>c.classList.remove("active"));
-      card.classList.add("active");
-      document.getElementById("filterDivision").value = div;
-      activeCategoryLabel = div + " বিভাগের পত্রিকা";
-      applyFilters();
-      showCategoryHeader();
-      document.getElementById("newspaperSection").scrollIntoView({behavior:"smooth"});
-    });
-    container.appendChild(card);
-  });
-}
-
-function buildFilterOptions(){
-  const fields = ["language","division"];
-  const selectIds = { language:"filterLanguage", division:"filterDivision" };
-  fields.forEach(field=>{
-    const select = document.getElementById(selectIds[field]);
-    select.innerHTML = select.options[0].outerHTML;
-    uniqueValues(field).forEach(v=>{
-      const opt = document.createElement("option");
-      opt.value = v; opt.textContent = v;
-      select.appendChild(opt);
-    });
-  });
-  ["chcDivision"].forEach(id=>{
-    const select = document.getElementById(id);
-    const firstOpt = select.options[0].outerHTML;
-    select.innerHTML = firstOpt;
-    uniqueValues("division").forEach(v=>{
-      const opt = document.createElement("option"); opt.value=v; opt.textContent=v; select.appendChild(opt);
-    });
-  });
-  const chcLang = document.getElementById("chcLanguage");
-  chcLang.innerHTML = chcLang.options[0].outerHTML;
-  uniqueValues("language").forEach(v=>{
-    const opt = document.createElement("option"); opt.value=v; opt.textContent=v; chcLang.appendChild(opt);
-  });
-}
-
-function buildPopularSection(){
-  const container = document.getElementById("popularScroll");
-  container.innerHTML = "";
-  const popular = allNewspapers.slice(0, 10);
-  if(popular.length === 0){ document.getElementById("popularSection").style.display = "none"; return; }
-  popular.forEach(item=>{
-    const name = getField(item,"name") || "নাম নেই";
-    const logo = getField(item,"logo");
-    const card = document.createElement("div");
-    card.className = "popular-card";
-    card.innerHTML = `
-      <div class="popular-cover">${logo ? `<img src="${logo}" alt="${name}"/>` : name.charAt(0)}</div>
-      <div class="popular-name">${name}</div>
-    `;
-    card.addEventListener("click", ()=>openDetailsModal(item));
-    container.appendChild(card);
-  });
-}
-
-function buildFooterCategories(){
-  const list = document.getElementById("footerCategoryList");
-  const cats = uniqueValues("category").slice(0,6);
-  list.innerHTML = "";
-  if(cats.length === 0){ list.innerHTML = "<li>শীঘ্রই যোগ হবে</li>"; return; }
-  cats.forEach(c=>{
-    const li = document.createElement("li");
-    li.textContent = c;
-    list.appendChild(li);
-  });
-}
-
-function showCategoryHeader(){
-  const card = document.getElementById("categoryHeaderCard");
-  card.classList.add("show");
-  document.getElementById("chcTitle").textContent = activeCategoryLabel || "পত্রিকা তালিকা";
-  document.getElementById("chcLogo").textContent = (activeCategoryLabel || "প").charAt(0);
-  updateCategoryHeaderCount();
-}
-function hideCategoryHeaderIfNoFilter(){
-  const cat = document.getElementById("filterCategory").value;
-  const div = document.getElementById("filterDivision").value;
-  if(!activeFrequency && !cat && !div){
-    document.getElementById("categoryHeaderCard").classList.remove("show");
-  }
-}
-function updateCategoryHeaderCount(){
-  document.getElementById("chcCount").textContent = `${filteredNewspapers.length}টি পত্রিকা পাওয়া গেছে`;
-}
-
-function renderPage(){
-  const grid = document.getElementById("newspaperGrid");
-  const resultCountEl = document.getElementById("resultCount");
-  grid.innerHTML = "";
-
-  if(filteredNewspapers.length === 0){
-    grid.innerHTML = `<div class="empty-state">দুঃখিত, কোনো পত্রিকা পাওয়া যায়নি। অন্য কিছু খুঁজে দেখুন।</div>`;
-    document.getElementById("pagination").innerHTML = "";
-    resultCountEl.textContent = "কোনো ফলাফল নেই";
-    updateCategoryHeaderCount();
-    return;
-  }
-
-  const start = (currentPage-1)*PER_PAGE;
-  const pageItems = filteredNewspapers.slice(start, start+PER_PAGE);
-
-  pageItems.forEach(item=>{
-    const name = getField(item,"name") || "নাম নেই";
-    const lang = getField(item,"language");
-    const freq = getField(item,"frequency");
-    const cat  = getField(item,"category");
-    const div  = getField(item,"division");
-    const dist = getField(item,"district");
-    const logo = getField(item,"logo");
-    const desc = getField(item,"description");
-
-    const card = document.createElement("div");
-    card.className = "np-card";
-    card.innerHTML = `
-      <div class="np-cover">
-        ${logo ? `<img src="${logo}" alt="${name}"/>` : name.charAt(0)}
-        ${freq ? `<span class="np-freq-tag">${freq}</span>` : ""}
-      </div>
-      <div class="np-info">
-        <div class="np-name">${name}</div>
-        <div class="np-badges">
-          ${cat ? `<span class="np-badge">${cat}</span>`:""}
-          ${lang ? `<span class="np-badge lang">${lang}</span>`:""}
-        </div>
-        ${(div||dist) ? `<div class="np-loc">📍 ${[dist,div].filter(Boolean).join(", ")}</div>` : ""}
-        ${desc ? `<div class="np-desc">${desc}</div>` : ""}
-      </div>
-    `;
-    card.addEventListener("click", ()=>openDetailsModal(item));
-    grid.appendChild(card);
-  });
-
-  resultCountEl.textContent = `মোট ${filteredNewspapers.length}টি পত্রিকা পাওয়া গেছে`;
-  updateCategoryHeaderCount();
-  renderPagination();
-}
-
-function renderPagination(){
-  const totalPages = Math.ceil(filteredNewspapers.length / PER_PAGE);
-  const container = document.getElementById("pagination");
-  container.innerHTML = "";
-  if(totalPages <= 1) return;
-  for(let i=1;i<=totalPages;i++){
-    const btn = document.createElement("div");
-    btn.className = "page-btn" + (i===currentPage ? " active" : "");
-    btn.textContent = i;
-    btn.addEventListener("click", ()=>{
-      currentPage = i;
-      renderPage();
-      document.getElementById("newspaperSection").scrollIntoView({behavior:"smooth"});
-    });
-    container.appendChild(btn);
-  }
-}
-
-function applyFilters(){
-  const q = document.getElementById("searchInput").value.trim().toLowerCase();
-  const chcQ = (document.getElementById("chcSearchInput").value || "").trim().toLowerCase();
-  const lang = document.getElementById("filterLanguage").value || document.getElementById("chcLanguage").value;
-  const cat  = document.getElementById("filterCategory").value.trim();
-  const div  = document.getElementById("filterDivision").value || document.getElementById("chcDivision").value;
-  const sort = document.getElementById("chcSort").value;
-
-  filteredNewspapers = allNewspapers.filter(item=>{
-    const name = getField(item,"name").toLowerCase();
-    const dist = getField(item,"district").toLowerCase();
-    const upazila = getField(item,"upazila").toLowerCase();
-    const query = q || chcQ;
-
-    if(query && !name.includes(query) && !dist.includes(query) && !upazila.includes(query)) return false;
-    if(lang && getField(item,"language") !== lang) return false;
-    if(cat && getField(item,"category") !== cat) return false;
-    if(div && getField(item,"division") !== div) return false;
-    if(activeFrequency && getField(item,"frequency") !== activeFrequency) return false;
-    return true;
-  });
-
-  if(sort === "az") filteredNewspapers.sort((a,b)=>getField(a,"name").localeCompare(getField(b,"name"),"bn"));
-  if(sort === "za") filteredNewspapers.sort((a,b)=>getField(b,"name").localeCompare(getField(a,"name"),"bn"));
-
-  currentPage = 1;
-  renderPage();
-}
-
-document.getElementById("searchInput").addEventListener("input", applyFilters);
-document.getElementById("searchBtn").addEventListener("click", applyFilters);
-document.getElementById("filterLanguage").addEventListener("change", applyFilters);
-document.getElementById("filterCategory").addEventListener("input", applyFilters);
-document.getElementById("filterDivision").addEventListener("change", applyFilters);
-document.getElementById("chcSearchInput").addEventListener("input", applyFilters);
-document.getElementById("chcDivision").addEventListener("change", applyFilters);
-document.getElementById("chcLanguage").addEventListener("change", applyFilters);
-document.getElementById("chcSort").addEventListener("change", applyFilters);
-
-function openDetailsModal(item){
-  const name = getField(item,"name") || "নাম নেই";
-  const lang = getField(item,"language");
-  const freq = getField(item,"frequency");
-  const cat  = getField(item,"category");
-  const div  = getField(item,"division");
-  const dist = getField(item,"district");
-  const logo = getField(item,"logo");
-  const desc = getField(item,"description");
-  const site = getField(item,"website");
-
-  const modalBox = document.getElementById("modalBox");
-  modalBox.innerHTML = `
-    <div class="modal-close" onclick="closeModal()">✕</div>
-    <div class="modal-hero">
-      <div class="modal-logo">${logo ? `<img src="${logo}" alt="${name}"/>` : name.charAt(0)}</div>
-      <div class="modal-name">${name}</div>
-      <div class="modal-tags">
-        ${cat ? `<span class="modal-tag">${cat}</span>`:""}
-        ${freq ? `<span class="modal-tag">${freq}</span>`:""}
-        ${div ? `<span class="modal-tag">${div} বিভাগ</span>`:""}
-      </div>
-    </div>
-    <div class="modal-body">
-      ${desc ? `<div class="modal-label">সংক্ষিপ্ত বিবরণ</div><div class="modal-desc">${desc}</div>` : ""}
-      ${cat ? `<div class="modal-info-row"><div class="k">ক্যাটাগরি</div><div class="v">${cat}</div></div>`:""}
-      ${div ? `<div class="modal-info-row"><div class="k">বিভাগ</div><div class="v">${div}</div></div>`:""}
-      ${dist ? `<div class="modal-info-row"><div class="k">জেলা</div><div class="v">${dist}</div></div>`:""}
-      ${lang ? `<div class="modal-info-row"><div class="k">ভাষা</div><div class="v">${lang}</div></div>`:""}
-      <button class="modal-btn-primary" onclick="openRedirectPanel('${name.replace(/'/g,"")}','${site}')">📰 পত্রিকাটি পড়ুন</button>
-      <a class="modal-btn-secondary" href="${FORM_URL}" target="_blank" rel="noopener">তথ্য আপডেটের জন্য আবেদন করুন</a>
-    </div>
-  `;
-  document.getElementById("modalOverlay").classList.add("open");
-}
-
-function openRedirectPanel(name, site){
-  const displayUrl = site ? site.replace(/^https?:\/\//,"").replace(/\/$/,"") : "";
-  const modalBox = document.getElementById("modalBox");
-  modalBox.innerHTML = `
-    <div class="modal-close" onclick="closeModal()">✕</div>
-    <div class="redirect-wrap">
-      <div class="redirect-icon">↗</div>
-      <div class="redirect-title">${name}-তে নিয়ে যাওয়া হচ্ছে</div>
-      <div class="redirect-text">আপনি এখন পত্রিকার নিজস্ব অফিসিয়াল ওয়েবসাইটে যাচ্ছেন। বাংলাদেশ পত্রিকা এই কন্টেন্টের মালিক বা প্রকাশক নয়।</div>
-      ${displayUrl ? `<div class="redirect-url">${displayUrl}</div>` : ""}
-      <button class="modal-btn-primary" style="margin:0;" onclick="goToWebsite('${site}')">এগিয়ে যান</button>
-    </div>
-  `;
-}
-
-function goToWebsite(site){
-  if(site) window.open(site, "_blank", "noopener");
-  closeModal();
-}
-
-function closeModal(){
-  document.getElementById("modalOverlay").classList.remove("open");
-}
-document.getElementById("modalOverlay").addEventListener("click", (e)=>{
-  if(e.target.id === "modalOverlay") closeModal();
-});
-
-const hamburgerBtn = document.getElementById("hamburgerBtn");
-const sideMenu = document.getElementById("sideMenu");
-const menuOverlay = document.getElementById("menuOverlay");
-hamburgerBtn.addEventListener("click", ()=>{ sideMenu.classList.add("open"); menuOverlay.classList.add("open"); });
-menuOverlay.addEventListener("click", closeMenu);
-function closeMenu(){ sideMenu.classList.remove("open"); menuOverlay.classList.remove("open"); }
-
-const darkModeToggle = document.getElementById("darkModeToggle");
-darkModeToggle.addEventListener("click", ()=>{
-  document.body.classList.toggle("dark");
-  darkModeToggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
-});
-
-const langBtn = document.getElementById("langBtn");
-const langDropdown = document.getElementById("langDropdown");
-langBtn.addEventListener("click", (e)=>{ e.stopPropagation(); langDropdown.classList.toggle("open"); });
-document.addEventListener("click", ()=>{ langDropdown.classList.remove("open"); });
-
-function googleTranslateElementInit(){
-  new google.translate.TranslateElement({pageLanguage:'bn', includedLanguages:'bn,en,ar', autoDisplay:false}, 'google_translate_element');
-}
-function changeLanguage(lang){
-  const combo = document.querySelector('.goog-te-combo');
-  if(combo){
-    combo.value = lang;
-    combo.dispatchEvent(new Event('change'));
-  }
-  langDropdown.classList.remove("open");
-}
-
-document.querySelectorAll(".bn-item").forEach(item=>{
-  item.addEventListener("click", ()=>{
-    document.querySelectorAll(".bn-item").forEach(i=>i.classList.remove("active"));
-    item.classList.add("active");
-    const target = item.dataset.target;
-    if(target === "top") window.scrollTo({top:0, behavior:"smooth"});
-    if(target === "category") document.getElementById("categoryChips").scrollIntoView({behavior:"smooth", block:"center"});
-    if(target === "division") document.getElementById("divisionGrid").scrollIntoView({behavior:"smooth", block:"center"});
-    if(target === "saved") alert("সংরক্ষণ (Saved) ফিচারটি শীঘ্রই যুক্ত করা হবে।");
-  });
-});
-
-document.getElementById("year").textContent = new Date().getFullYear();
-loadNewspapers();
-</script>
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
-</body>
-</html>
+let filteredNewspapers
