@@ -1,1069 +1,6875 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>বাংলাদেশ পত্রিকা — ডিরেক্টরি</title>
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+  name="description"
+  content="পত্রিকা সমাহার — বাংলাদেশের সংবাদপত্র ও সাময়িকীর তথ্যভিত্তিক ডিরেক্টরি"
+>
+
+<meta
+  name="theme-color"
+  content="#082c46"
+>
+
+<title>পত্রিকা সমাহার</title>
+
 
 <style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
+
+/* =========================================================
+   ROOT
+   ========================================================= */
 
 :root{
-  --primary:#075e45;
-  --primary2:#087f5b;
-  --blue:#164e8c;
-  --bg:#f5f7f9;
-  --card:#ffffff;
-  --text:#17212b;
-  --muted:#6b7280;
-  --border:#e4e8ed;
-  --soft:#edf7f3;
+
+--navy:#082c46;
+--teal:#087f72;
+--green:#16a085;
+
+--bg:#f5f8fa;
+--card:#fff;
+
+--text:#163042;
+--muted:#6b7b87;
+
+--line:#e2e9ee;
+--soft:#edf6f4;
+
+--shadow:0 8px 28px rgba(8,44,70,.08);
+
+--radius:18px;
+
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+*{
+box-sizing:border-box;
+}
+
+html{
+scroll-behavior:smooth;
 }
 
 body{
-  font-family:Arial,"Noto Sans Bengali",sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  line-height:1.6;
+margin:0;
+background:var(--bg);
+color:var(--text);
+
+font-family:
+system-ui,
+-apple-system,
+"Bengali",
+"Noto Sans Bengali",
+"Noto Sans",
+sans-serif;
+
+min-height:100vh;
 }
 
 body.dark{
-  --bg:#10151c;
-  --card:#1a212b;
-  --text:#f1f5f9;
-  --muted:#9ca7b3;
-  --border:#303946;
-  --soft:#16392f;
+
+--bg:#0c1720;
+--card:#12222e;
+
+--text:#eaf3f7;
+--muted:#9db0bc;
+
+--line:#263b49;
+--soft:#17352f;
+
+--shadow:0 8px 28px rgba(0,0,0,.25);
+
 }
 
-/* HEADER */
+button,
+input,
+select{
+font:inherit;
+}
+
+button{
+cursor:pointer;
+}
+
+a{
+text-decoration:none;
+color:inherit;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
 .header{
-  background:linear-gradient(135deg,var(--primary),var(--blue));
-  color:white;
-  position:sticky;
-  top:0;
-  z-index:100;
-  box-shadow:0 3px 15px rgba(0,0,0,.12);
+
+position:sticky;
+top:0;
+
+z-index:100;
+
+background:rgba(255,255,255,.94);
+
+backdrop-filter:blur(12px);
+
+border-bottom:1px solid var(--line);
+
 }
 
-.header-inner{
-  max-width:1100px;
-  margin:auto;
-  padding:14px;
+body.dark .header{
+background:rgba(12,23,32,.94);
 }
 
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
+
+.nav{
+
+height:66px;
+
+max-width:1180px;
+
+margin:auto;
+
+padding:0 14px;
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
 }
+
 
 .brand{
-  font-size:20px;
-  font-weight:800;
-  cursor:pointer;
+
+display:flex;
+
+align-items:center;
+
+gap:9px;
+
+font-weight:900;
+
+color:var(--navy);
+
+min-width:0;
+
 }
 
-.dark-btn{
-  border:0;
-  background:rgba(255,255,255,.17);
-  color:white;
-  border-radius:20px;
-  padding:7px 11px;
-  cursor:pointer;
+.dark .brand{
+color:#dff7f1;
 }
 
-/* SEARCH */
-.search-box{
-  margin-top:14px;
-  position:relative;
+
+.brandIcon{
+
+width:40px;
+height:40px;
+
+border-radius:12px;
+
+display:grid;
+
+place-items:center;
+
+background:
+linear-gradient(
+135deg,
+var(--navy),
+var(--teal)
+);
+
+color:#fff;
+
+font-weight:900;
+
+flex:none;
+
 }
 
-.search-box input{
-  width:100%;
-  border:0;
-  outline:0;
-  padding:14px 45px 14px 16px;
-  border-radius:13px;
-  font-size:15px;
-  background:white;
-  color:#222;
+
+.brandText{
+
+white-space:nowrap;
+
+overflow:hidden;
+
+text-overflow:ellipsis;
+
 }
 
-.search-icon{
-  position:absolute;
-  right:15px;
-  top:10px;
-  font-size:21px;
+
+.navActions{
+
+margin-left:auto;
+
+display:flex;
+
+gap:7px;
+
 }
 
-/* MAIN */
+
+.icon{
+
+width:40px;
+height:40px;
+
+border:1px solid var(--line);
+
+background:var(--card);
+
+color:var(--text);
+
+border-radius:12px;
+
+}
+
+
+/* =========================================================
+   DRAWER
+   ========================================================= */
+
+.drawer{
+
+position:fixed;
+
+inset:0;
+
+z-index:200;
+
+display:none;
+
+}
+
+.drawer.open{
+display:block;
+}
+
+
+.drawerShade{
+
+position:absolute;
+
+inset:0;
+
+background:rgba(0,0,0,.45);
+
+}
+
+
+.drawerPanel{
+
+position:absolute;
+
+left:0;
+
+top:0;
+
+bottom:0;
+
+width:min(285px,78vw);
+
+background:var(--card);
+
+padding:20px 15px;
+
+box-shadow:
+20px 0 50px rgba(0,0,0,.18);
+
+overflow-y:auto;
+
+}
+
+
+.drawerTop{
+
+display:flex;
+
+justify-content:flex-end;
+
+align-items:center;
+
+margin-bottom:4px;
+
+}
+
+
+.drawerPanel h3{
+
+margin:4px 0 18px;
+
+font-size:20px;
+
+}
+
+
+.menuItem{
+
+display:block;
+
+width:100%;
+
+border:0;
+
+background:transparent;
+
+color:var(--text);
+
+text-align:left;
+
+padding:13px 10px;
+
+border-radius:12px;
+
+margin-bottom:3px;
+
+}
+
+
+.menuItem:hover{
+
+background:var(--soft);
+
+}
+
+
+/* =========================================================
+   NOTICE
+   ========================================================= */
+
+.notice{
+
+background:var(--navy);
+
+color:#fff;
+
+font-size:13px;
+
+}
+
+
+.noticeInner{
+
+max-width:1180px;
+
+margin:auto;
+
+padding:7px 14px;
+
+display:flex;
+
+gap:8px;
+
+align-items:center;
+
+overflow:hidden;
+
+}
+
+
+.noticeInner span:last-child{
+
+white-space:nowrap;
+
+overflow:hidden;
+
+text-overflow:ellipsis;
+
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
 main{
-  max-width:1100px;
-  margin:auto;
-  padding:22px 14px 50px;
+
+max-width:1180px;
+
+margin:auto;
+
+padding:
+18px
+14px
+100px;
+
 }
 
-.page{
-  display:none;
-}
 
-.page.active{
-  display:block;
-}
+/* =========================================================
+   HERO
+   ========================================================= */
 
-/* HOME HERO */
 .hero{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:20px;
-  padding:23px 18px;
-  margin-bottom:20px;
-  box-shadow:0 5px 20px rgba(0,0,0,.04);
+
+background:
+linear-gradient(
+135deg,
+#082c46,
+#087f72 70%,
+#16a085
+);
+
+color:#fff;
+
+border-radius:26px;
+
+padding:28px 20px;
+
+box-shadow:var(--shadow);
+
 }
+
 
 .hero h1{
-  font-size:27px;
-  margin-bottom:7px;
+
+font-size:
+clamp(
+26px,
+6vw,
+46px
+);
+
+margin:
+0
+0
+8px;
+
+line-height:1.15;
+
 }
+
 
 .hero p{
-  color:var(--muted);
-  font-size:14px;
+
+margin:0;
+
+opacity:.94;
+
+line-height:1.75;
+
 }
 
-/* SECTION */
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.search{
+
+margin-top:18px;
+
+background:#fff;
+
+padding:7px;
+
+border-radius:15px;
+
+display:flex;
+
+gap:7px;
+
+}
+
+
+.search input{
+
+border:0;
+
+outline:0;
+
+min-width:0;
+
+flex:1;
+
+padding:11px 12px;
+
+color:#173042;
+
+background:#fff;
+
+}
+
+
+.search button{
+
+border:0;
+
+border-radius:11px;
+
+padding:
+0
+16px;
+
+background:var(--teal);
+
+color:#fff;
+
+font-weight:800;
+
+}
+
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
 .section{
-  margin-bottom:26px;
+
+margin-top:25px;
+
 }
 
-.section-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:13px;
+
+.sectionHead{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+gap:10px;
+
+margin-bottom:12px;
+
 }
 
-.section-head h2{
-  font-size:20px;
+
+.sectionHead h2{
+
+font-size:20px;
+
+margin:0;
+
 }
 
-.see-all{
-  color:var(--primary2);
-  border:0;
-  background:none;
-  font-size:13px;
-  cursor:pointer;
+
+.sectionHead small{
+
+color:var(--muted);
+
 }
 
-/* CATEGORY */
-.category-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
+
+/* =========================================================
+   SCROLL / CHIP
+   ========================================================= */
+
+.scroll{
+
+display:flex;
+
+gap:8px;
+
+overflow:auto;
+
+padding-bottom:4px;
+
+scrollbar-width:thin;
+
 }
 
-.category{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:15px;
-  padding:15px 8px;
-  text-align:center;
-  cursor:pointer;
-  transition:.2s;
+
+.chip{
+
+white-space:nowrap;
+
+border:1px solid var(--line);
+
+background:var(--card);
+
+color:var(--text);
+
+border-radius:999px;
+
+padding:9px 13px;
+
 }
 
-.category:hover{
-  transform:translateY(-2px);
+
+.chip.active,
+.chip:hover{
+
+background:var(--teal);
+
+border-color:var(--teal);
+
+color:#fff;
+
 }
 
-.category-icon{
-  font-size:25px;
-  display:block;
-  margin-bottom:4px;
+
+/* =========================================================
+   FILTER BOX
+   ========================================================= */
+
+.filterSection{
+
+margin-top:20px;
+
 }
 
-.category-title{
-  font-weight:700;
-  font-size:14px;
+
+.filters{
+
+background:var(--card);
+
+border:1px solid var(--line);
+
+border-radius:18px;
+
+padding:12px;
+
+display:grid;
+
+grid-template-columns:
+repeat(3,1fr);
+
+gap:9px;
+
+box-shadow:var(--shadow);
+
 }
 
-/* AREA */
-.area-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:9px;
+
+.filters select{
+
+width:100%;
+
+border:1px solid var(--line);
+
+background:var(--card);
+
+color:var(--text);
+
+border-radius:11px;
+
+padding:10px;
+
+outline:0;
+
 }
 
-.area{
-  background:var(--card);
-  border:1px solid var(--border);
-  padding:11px 5px;
-  text-align:center;
-  border-radius:12px;
-  cursor:pointer;
-  font-size:13px;
+
+/* =========================================================
+   DIVISION GRID
+   ========================================================= */
+
+.divisionGrid{
+
+display:grid;
+
+grid-template-columns:
+repeat(2,1fr);
+
+gap:9px;
+
 }
 
-.area:hover{
-  border-color:var(--primary2);
+
+.division{
+
+background:var(--card);
+
+border:1px solid var(--line);
+
+border-radius:14px;
+
+padding:13px;
+
+text-align:center;
+
+font-weight:750;
+
+transition:.18s;
+
 }
 
-/* CARDS */
-.newspaper-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:14px;
+
+.division:hover{
+
+transform:translateY(-2px);
+
+border-color:var(--teal);
+
 }
+
+
+.division span{
+
+display:block;
+
+font-size:12px;
+
+color:var(--muted);
+
+font-weight:500;
+
+margin-top:2px;
+
+}
+
+
+/* =========================================================
+   GRID
+   ========================================================= */
+
+.grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(2,minmax(0,1fr));
+
+gap:12px;
+
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
 
 .card{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:16px;
-  overflow:hidden;
-  cursor:pointer;
-  transition:.2s;
-  box-shadow:0 4px 14px rgba(0,0,0,.04);
+
+background:var(--card);
+
+border:1px solid var(--line);
+
+border-radius:18px;
+
+overflow:hidden;
+
+box-shadow:var(--shadow);
+
+transition:.18s;
+
 }
+
 
 .card:hover{
-  transform:translateY(-3px);
+
+transform:translateY(-2px);
+
 }
 
-.card-img{
-  height:135px;
-  background:#e8edf1;
-  overflow:hidden;
+
+/* =========================================================
+   LOGO
+   ========================================================= */
+
+.logo{
+
+height:145px;
+
+background:
+linear-gradient(
+180deg,
+var(--soft),
+rgba(127,127,127,.04)
+);
+
+display:grid;
+
+place-items:center;
+
+padding:15px;
+
+overflow:hidden;
+
 }
 
-.card-img img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
+
+.logo img{
+
+max-width:100%;
+
+max-height:115px;
+
+width:auto;
+
+height:auto;
+
+object-fit:contain;
+
+display:block;
+
 }
 
-.card-body{
-  padding:11px;
+
+.placeholder{
+
+width:70px;
+
+height:70px;
+
+border-radius:20px;
+
+background:#dcebe7;
+
+color:var(--teal);
+
+display:grid;
+
+place-items:center;
+
+font-size:25px;
+
+font-weight:900;
+
 }
 
-.card-name{
-  font-size:16px;
-  font-weight:800;
-  margin-bottom:2px;
+
+body.dark .placeholder{
+
+background:#20423c;
+
 }
 
-.card-location{
-  color:var(--muted);
-  font-size:12px;
+
+/* =========================================================
+   CARD BODY
+   ========================================================= */
+
+.cardBody{
+
+padding:13px;
+
 }
+
+
+.cardBody h3{
+
+font-size:17px;
+
+margin:
+0
+0
+7px;
+
+}
+
+
+.meta{
+
+display:flex;
+
+flex-wrap:wrap;
+
+gap:5px;
+
+}
+
 
 .badge{
-  display:inline-block;
-  margin-top:7px;
-  padding:3px 8px;
-  border-radius:12px;
-  background:var(--soft);
-  color:var(--primary2);
-  font-size:11px;
+
+font-size:11px;
+
+padding:5px 8px;
+
+border-radius:999px;
+
+background:var(--soft);
+
+color:var(--teal);
+
 }
 
-/* LIST PAGE */
-.back-btn{
-  border:0;
-  background:none;
-  color:var(--primary2);
-  font-size:15px;
-  cursor:pointer;
-  margin-bottom:13px;
+
+.desc{
+
+font-size:13px;
+
+line-height:1.65;
+
+color:var(--muted);
+
+margin:
+9px
+0
+0;
+
+display:
+-webkit-box;
+
+-webkit-line-clamp:2;
+
+-webkit-box-orient:vertical;
+
+overflow:hidden;
+
 }
 
-.page-title{
-  font-size:25px;
-  margin-bottom:4px;
+
+.cardBtn{
+
+margin-top:10px;
+
+width:100%;
+
+border:0;
+
+border-radius:10px;
+
+padding:9px;
+
+background:var(--teal);
+
+color:#fff;
+
+font-weight:750;
+
 }
 
-.page-subtitle{
-  color:var(--muted);
-  margin-bottom:18px;
-  font-size:14px;
+
+.cardBtn.secondaryCard{
+
+background:var(--soft);
+
+color:var(--teal);
+
 }
 
-.filter-row{
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  margin-bottom:18px;
-}
 
-.filter{
-  white-space:nowrap;
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  padding:8px 14px;
-  border-radius:20px;
-  cursor:pointer;
-}
+/* =========================================================
+   EMPTY
+   ========================================================= */
 
-.filter.active{
-  background:var(--primary2);
-  color:white;
-  border-color:var(--primary2);
-}
-
-/* DETAILS */
-.details{
-  max-width:700px;
-  margin:auto;
-}
-
-.details-box{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:20px;
-  overflow:hidden;
-  box-shadow:0 5px 20px rgba(0,0,0,.05);
-}
-
-.details-image{
-  height:260px;
-  background:#e8edf1;
-}
-
-.details-image img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.details-content{
-  padding:20px;
-}
-
-.details-name{
-  font-size:28px;
-  font-weight:800;
-}
-
-.details-meta{
-  color:var(--muted);
-  margin-top:3px;
-}
-
-.details-description{
-  margin-top:20px;
-  padding-top:18px;
-  border-top:1px solid var(--border);
-  color:var(--muted);
-}
-
-.main-button{
-  display:block;
-  width:100%;
-  border:0;
-  background:linear-gradient(135deg,var(--primary2),var(--blue));
-  color:white;
-  padding:14px;
-  border-radius:12px;
-  font-size:16px;
-  font-weight:800;
-  cursor:pointer;
-  margin-top:20px;
-}
-
-.share-button{
-  width:100%;
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--text);
-  padding:12px;
-  border-radius:12px;
-  margin-top:9px;
-  cursor:pointer;
-}
-
-/* LOCATION */
-.location-box{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:18px;
-}
-
-.location-step{
-  padding:13px;
-  border-bottom:1px solid var(--border);
-  cursor:pointer;
-}
-
-.location-step:last-child{
-  border-bottom:0;
-}
-
-.location-step strong{
-  display:block;
-}
-
-.location-step span{
-  color:var(--muted);
-  font-size:12px;
-}
-
-/* FORM */
-.form-box{
-  max-width:650px;
-  margin:auto;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:20px;
-}
-
-.form-group{
-  margin-bottom:15px;
-}
-
-.form-group label{
-  display:block;
-  font-weight:700;
-  margin-bottom:6px;
-  font-size:14px;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea{
-  width:100%;
-  padding:12px;
-  border:1px solid var(--border);
-  border-radius:10px;
-  background:var(--bg);
-  color:var(--text);
-  outline:none;
-  font-family:inherit;
-}
-
-.form-group textarea{
-  min-height:110px;
-  resize:vertical;
-}
-
-/* ABOUT */
-.about-box{
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:18px;
-  padding:22px;
-}
-
-.about-box h2{
-  margin-bottom:10px;
-}
-
-.about-box p{
-  color:var(--muted);
-  margin-bottom:15px;
-}
-
-/* EMPTY */
 .empty{
-  text-align:center;
-  padding:45px 10px;
-  color:var(--muted);
-  grid-column:1/-1;
+
+grid-column:1/-1;
+
+background:var(--card);
+
+border:1px dashed var(--line);
+
+border-radius:18px;
+
+padding:28px;
+
+text-align:center;
+
+color:var(--muted);
+
 }
 
-/* FOOTER */
-footer{
-  text-align:center;
-  padding:25px 15px;
-  color:var(--muted);
-  font-size:12px;
+
+/* =========================================================
+   PAGINATION
+   ========================================================= */
+
+.pagination{
+
+display:flex;
+
+justify-content:center;
+
+gap:7px;
+
+margin-top:18px;
+
+flex-wrap:wrap;
+
 }
 
-/* MOBILE */
-@media(max-width:800px){
-  .newspaper-grid{
-    grid-template-columns:repeat(3,1fr);
-  }
+
+.page{
+
+min-width:38px;
+
+height:38px;
+
+border:1px solid var(--line);
+
+background:var(--card);
+
+color:var(--text);
+
+border-radius:10px;
+
 }
 
-@media(max-width:560px){
-  .newspaper-grid{
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
-  }
 
-  .card-img{
-    height:110px;
-  }
+.page.active{
 
-  .card-name{
-    font-size:14px;
-  }
+background:var(--navy);
 
-  .category-grid{
-    grid-template-columns:repeat(3,1fr);
-  }
+color:#fff;
 
-  .area-grid{
-    grid-template-columns:repeat(2,1fr);
-  }
+border-color:var(--navy);
 
-  .hero h1{
-    font-size:23px;
-  }
-
-  .details-image{
-    height:210px;
-  }
 }
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.btn{
+
+display:inline-flex;
+
+align-items:center;
+
+justify-content:center;
+
+border:0;
+
+border-radius:12px;
+
+padding:11px 16px;
+
+font-weight:800;
+
+}
+
+
+.primary{
+
+background:var(--teal);
+
+color:#fff;
+
+}
+
+
+.secondary{
+
+background:var(--soft);
+
+color:var(--text);
+
+}
+
+
+/* =========================================================
+   CTA
+   ========================================================= */
+
+.cta{
+
+margin-top:28px;
+
+background:var(--card);
+
+border:1px solid var(--line);
+
+border-radius:20px;
+
+padding:22px;
+
+text-align:center;
+
+box-shadow:var(--shadow);
+
+}
+
+
+.cta h2{
+
+margin:
+0
+0
+7px;
+
+}
+
+
+.cta p{
+
+color:var(--muted);
+
+margin:
+0
+0
+14px;
+
+line-height:1.7;
+
+}
+
+
+/* =========================================================
+   PROMO
+   ========================================================= */
+
+.promo{
+
+margin-top:18px;
+
+border-radius:20px;
+
+padding:20px;
+
+background:
+linear-gradient(
+135deg,
+var(--navy),
+#0b655e
+);
+
+color:#fff;
+
+}
+
+
+.promo p{
+
+line-height:1.7;
+
+opacity:.92;
+
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.footer{
+
+margin-top:36px;
+
+border-top:1px solid var(--line);
+
+padding-top:24px;
+
+color:var(--muted);
+
+font-size:13px;
+
+}
+
+
+.footerGrid{
+
+display:grid;
+
+grid-template-columns:
+repeat(2,1fr);
+
+gap:18px;
+
+}
+
+
+.footer h3{
+
+color:var(--text);
+
+font-size:15px;
+
+margin:
+0
+0
+9px;
+
+}
+
+
+.footer a{
+
+display:block;
+
+margin:6px 0;
+
+}
+
+
+/* =========================================================
+   BOTTOM NAV
+   ========================================================= */
+
+.bottom{
+
+position:fixed;
+
+bottom:0;
+
+left:0;
+
+right:0;
+
+z-index:90;
+
+background:
+rgba(255,255,255,.96);
+
+backdrop-filter:blur(10px);
+
+border-top:1px solid var(--line);
+
+display:grid;
+
+grid-template-columns:
+repeat(4,1fr);
+
+}
+
+
+.dark .bottom{
+
+background:
+rgba(12,23,32,.96);
+
+}
+
+
+.bottom button{
+
+border:0;
+
+background:transparent;
+
+color:var(--muted);
+
+padding:
+8px
+3px;
+
+font-size:11px;
+
+}
+
+
+.bottom b{
+
+display:block;
+
+font-size:18px;
+
+color:var(--text);
+
+}
+
+
+/* =========================================================
+   MODAL
+   ========================================================= */
+
+.modal{
+
+position:fixed;
+
+inset:0;
+
+background:
+rgba(0,0,0,.58);
+
+z-index:300;
+
+display:none;
+
+padding:14px;
+
+overflow:auto;
+
+}
+
+
+.modal.open{
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+}
+
+
+.modalBox{
+
+width:min(760px,100%);
+
+max-height:92vh;
+
+overflow:auto;
+
+background:var(--card);
+
+color:var(--text);
+
+border-radius:22px;
+
+box-shadow:
+0
+25px
+80px
+rgba(0,0,0,.25);
+
+}
+
+
+/* =========================================================
+   MODAL TOP
+   ========================================================= */
+
+.modalTop{
+
+display:flex;
+
+justify-content:flex-end;
+
+padding:
+9px
+9px
+0;
+
+}
+
+
+.close{
+
+width:38px;
+
+height:38px;
+
+border:0;
+
+border-radius:10px;
+
+background:var(--soft);
+
+color:var(--text);
+
+font-size:20px;
+
+}
+
+
+/* =========================================================
+   DETAIL
+   ========================================================= */
+
+.detailHead{
+
+display:grid;
+
+grid-template-columns:
+150px
+1fr;
+
+gap:18px;
+
+padding:
+8px
+20px
+20px;
+
+}
+
+
+.detailLogo{
+
+height:150px;
+
+border-radius:17px;
+
+background:var(--soft);
+
+display:grid;
+
+place-items:center;
+
+padding:14px;
+
+overflow:hidden;
+
+}
+
+
+.detailLogo img{
+
+max-width:100%;
+
+max-height:125px;
+
+object-fit:contain;
+
+display:block;
+
+}
+
+
+.detailHead h2{
+
+margin:
+8px
+0;
+
+}
+
+
+.detailBody{
+
+padding:
+0
+20px
+24px;
+
+}
+
+
+.detailBody p{
+
+line-height:1.85;
+
+color:var(--muted);
+
+}
+
+
+/* =========================================================
+   DETAIL INFO
+   ========================================================= */
+
+.infoGrid{
+
+display:grid;
+
+grid-template-columns:
+repeat(2,1fr);
+
+gap:9px;
+
+margin:
+15px
+0;
+
+}
+
+
+.info{
+
+border:1px solid var(--line);
+
+border-radius:13px;
+
+padding:10px;
+
+}
+
+
+.info b{
+
+display:block;
+
+font-size:11px;
+
+color:var(--muted);
+
+margin-bottom:3px;
+
+}
+
+
+.info span{
+
+line-height:1.5;
+
+}
+
+
+/* =========================================================
+   DETAIL ACTIONS
+   ========================================================= */
+
+.actions{
+
+display:flex;
+
+flex-wrap:wrap;
+
+gap:8px;
+
+margin-top:14px;
+
+}
+
+
+.actions .btn{
+
+flex:1;
+
+min-width:130px;
+
+}
+
+
+.readBtn{
+
+background:var(--teal);
+
+color:#fff;
+
+}
+
+
+.pdfBtn{
+
+background:#eaf4f1;
+
+color:var(--teal);
+
+}
+
+
+.shareBtn{
+
+background:var(--soft);
+
+color:var(--text);
+
+}
+
+
+/* =========================================================
+   DESCRIPTION CARD
+   ========================================================= */
+
+.descriptionBlock{
+
+margin-top:20px;
+
+padding-top:18px;
+
+border-top:1px solid var(--line);
+
+}
+
+
+.descriptionBlock h3{
+
+margin:
+0
+0
+9px;
+
+font-size:18px;
+
+}
+
+
+.descriptionText{
+
+white-space:pre-line;
+
+line-height:1.9;
+
+color:var(--muted);
+
+}
+
+
+/* =========================================================
+   CORRECTION CARD
+   ========================================================= */
+
+.correctionCard{
+
+margin-top:22px;
+
+padding:18px;
+
+border-radius:18px;
+
+background:
+linear-gradient(
+135deg,
+var(--soft),
+rgba(22,160,133,.06)
+);
+
+border:1px solid var(--line);
+
+}
+
+
+.correctionCard h3{
+
+margin:
+0
+0
+7px;
+
+font-size:17px;
+
+}
+
+
+.correctionCard p{
+
+margin:
+0
+0
+13px;
+
+font-size:13px;
+
+line-height:1.75;
+
+color:var(--muted);
+
+}
+
+
+.correctionCard .btn{
+
+width:100%;
+
+}
+
+
+/* =========================================================
+   TAGS
+   ========================================================= */
+
+.tags{
+
+display:flex;
+
+flex-wrap:wrap;
+
+gap:6px;
+
+margin-top:18px;
+
+padding-top:16px;
+
+border-top:1px solid var(--line);
+
+}
+
+
+.tag{
+
+font-size:11px;
+
+padding:
+6px
+9px;
+
+border-radius:999px;
+
+background:var(--soft);
+
+color:var(--teal);
+
+}
+
+
+/* =========================================================
+   EXTERNAL NOTICE
+   ========================================================= */
+
+.externalBox{
+
+padding:
+4px
+22px
+25px;
+
+text-align:center;
+
+}
+
+
+.externalIcon{
+
+width:70px;
+
+height:70px;
+
+border-radius:20px;
+
+margin:
+4px
+auto
+16px;
+
+display:grid;
+
+place-items:center;
+
+background:var(--soft);
+
+color:var(--teal);
+
+font-size:32px;
+
+font-weight:900;
+
+}
+
+
+.externalBox h2{
+
+margin:
+0
+0
+10px;
+
+font-size:23px;
+
+}
+
+
+.externalBox p{
+
+color:var(--muted);
+
+line-height:1.9;
+
+font-size:14px;
+
+margin:
+0
+auto
+20px;
+
+max-width:570px;
+
+}
+
+
+.externalUrl{
+
+background:var(--bg);
+
+border:1px solid var(--line);
+
+border-radius:14px;
+
+padding:13px;
+
+font-size:13px;
+
+word-break:break-all;
+
+margin-bottom:18px;
+
+color:var(--teal);
+
+}
+
+
+.externalActions{
+
+display:flex;
+
+gap:8px;
+
+}
+
+
+.externalActions .btn{
+
+flex:1;
+
+}
+
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading{
+
+padding:25px;
+
+text-align:center;
+
+color:var(--muted);
+
+}
+
+
+.loadingDot{
+
+display:inline-block;
+
+width:8px;
+
+height:8px;
+
+border-radius:50%;
+
+background:var(--teal);
+
+margin:
+0
+3px;
+
+animation:
+loading 1s infinite;
+
+}
+
+
+@keyframes loading{
+
+0%,100%{
+opacity:.3;
+transform:translateY(0);
+}
+
+50%{
+opacity:1;
+transform:translateY(-3px);
+}
+
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+.toast{
+
+position:fixed;
+
+left:50%;
+
+bottom:80px;
+
+transform:
+translateX(-50%)
+translateY(20px);
+
+background:var(--navy);
+
+color:#fff;
+
+padding:
+11px
+16px;
+
+border-radius:12px;
+
+font-size:13px;
+
+z-index:600;
+
+opacity:0;
+
+pointer-events:none;
+
+transition:.25s;
+
+max-width:
+calc(100vw - 30px);
+
+text-align:center;
+
+}
+
+
+.toast.show{
+
+opacity:1;
+
+transform:
+translateX(-50%)
+translateY(0);
+
+}
+
+
+/* =========================================================
+   ABOUT SUPPORT
+   ========================================================= */
+
+.supportCard{
+
+margin-top:18px;
+
+background:var(--card);
+
+border:
+1px
+solid
+var(--line);
+
+border-radius:20px;
+
+padding:22px;
+
+box-shadow:var(--shadow);
+
+}
+
+
+.supportCard h2{
+
+margin:
+0
+0
+8px;
+
+font-size:20px;
+
+}
+
+
+.supportCard p{
+
+margin:
+0
+0
+14px;
+
+color:var(--muted);
+
+line-height:1.85;
+
+}
+
+
+.supportList{
+
+margin:
+0
+0
+16px;
+
+padding-left:20px;
+
+color:var(--muted);
+
+line-height:1.9;
+
+}
+
+
+/* =========================================================
+   GOOGLE TRANSLATE
+   ========================================================= */
+
+#google_translate_element{
+
+position:absolute;
+
+left:-99999px;
+
+top:-99999px;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media(min-width:700px){
+
+.grid{
+
+grid-template-columns:
+repeat(4,minmax(0,1fr));
+
+}
+
+
+.divisionGrid{
+
+grid-template-columns:
+repeat(4,1fr);
+
+}
+
+
+.footerGrid{
+
+grid-template-columns:
+repeat(4,1fr);
+
+}
+
+
+main{
+
+padding-left:20px;
+
+padding-right:20px;
+
+}
+
+
+.bottom{
+
+display:none;
+
+}
+
+}
+
+
+@media(max-width:620px){
+
+.filters{
+
+grid-template-columns:1fr;
+
+}
+
+
+.detailHead{
+
+grid-template-columns:1fr;
+
+}
+
+
+.detailLogo{
+
+height:180px;
+
+}
+
+
+.detailLogo img{
+
+max-height:155px;
+
+}
+
+
+.actions{
+
+display:grid;
+
+grid-template-columns:
+1fr;
+
+}
+
+
+.externalActions{
+
+display:grid;
+
+grid-template-columns:
+1fr;
+
+}
+
+
+.drawerPanel{
+
+width:min(285px,82vw);
+
+}
+
+}
+
+
+@media(max-width:390px){
+
+.grid{
+
+grid-template-columns:1fr;
+
+}
+
+
+.divisionGrid{
+
+grid-template-columns:
+repeat(2,1fr);
+
+}
+
+
+.brandText{
+
+font-size:14px;
+
+}
+
+}
+
+
 </style>
+
 </head>
+
 
 <body>
 
-<!-- HEADER -->
+
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+
 <header class="header">
-  <div class="header-inner">
 
-    <div class="topbar">
-      <div class="brand" onclick="showPage('home')">
-        📰 বাংলাদেশ পত্রিকা
-      </div>
+<div class="nav">
 
-      <button class="dark-btn" onclick="toggleDark()">
-        🌙
-      </button>
-    </div>
 
-    <div class="search-box">
-      <input
-        id="globalSearch"
-        type="search"
-        placeholder="পত্রিকার নাম, জেলা বা এলাকা খুঁজুন..."
-        oninput="searchNewspapers()"
-      >
-      <span class="search-icon">🔍</span>
-    </div>
+<button
+class="icon"
+aria-label="menu"
+onclick="openDrawer()"
+>
+☰
+</button>
 
-  </div>
+
+<a
+class="brand"
+href="#"
+onclick="goHome();return false"
+>
+
+<span class="brandIcon">
+প
+</span>
+
+<span class="brandText">
+পত্রিকা সমাহার
+</span>
+
+</a>
+
+
+<div class="navActions">
+
+
+<button
+class="icon"
+onclick="toggleLang()"
+title="ভাষা"
+>
+A
+</button>
+
+
+<button
+class="icon"
+onclick="toggleTheme()"
+title="ডার্ক মোড"
+>
+◐
+</button>
+
+
+</div>
+
+</div>
+
 </header>
 
 
+<!-- =========================================================
+     NOTICE
+     ========================================================= -->
+
+<div class="notice">
+
+<div class="noticeInner">
+
+<span>●</span>
+
+<span id="noticeText">
+বাংলাদেশের সংবাদপত্র ও সাময়িকীর তথ্য এক জায়গায়
+</span>
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     DRAWER
+     ========================================================= -->
+
+<div
+id="drawer"
+class="drawer"
+>
+
+<div
+class="drawerShade"
+onclick="closeDrawer()"
+></div>
+
+
+<aside class="drawerPanel">
+
+
+<div class="drawerTop">
+
+<button
+class="close"
+onclick="closeDrawer()"
+aria-label="বন্ধ করুন"
+>
+×
+</button>
+
+</div>
+
+
+<h3>
+মেনু
+</h3>
+
+
+<button
+class="menuItem"
+onclick="goHome();closeDrawer()"
+>
+⌂ হোম
+</button>
+
+
+<button
+class="menuItem"
+onclick="showAll();closeDrawer()"
+>
+▦ সব পত্রিকা
+</button>
+
+
+<button
+class="menuItem"
+onclick="focusSearch();closeDrawer()"
+>
+⌕ অনুসন্ধান
+</button>
+
+
+<button
+class="menuItem"
+onclick="showAbout();closeDrawer()"
+>
+ⓘ ডিরেক্টরি সম্পর্কে
+</button>
+
+
+<a
+class="menuItem"
+href="https://forms.gle/378WKzkQqqkqBRjt5"
+target="_blank"
+rel="noopener"
+>
+＋ পত্রিকা যোগ করুন
+</a>
+
+
+</aside>
+
+</div>
+
+
+<!-- =========================================================
+     MAIN
+     ========================================================= -->
+
 <main>
 
-<!-- ================= HOME ================= -->
 
-<section id="home" class="page active">
+<!-- =========================================================
+     HOME
+     ========================================================= -->
 
-  <div class="hero">
-    <h1>বাংলাদেশের পত্রিকা এক জায়গায়</h1>
-    <p>
-      দৈনিক, সাপ্তাহিক, মাসিক, ইসলামিক, অনলাইন ও আঞ্চলিক
-      পত্রিকা সহজে খুঁজে দেখুন।
-    </p>
-  </div>
+<section
+id="homeView"
+>
 
 
-  <!-- CATEGORY -->
+<!-- HERO -->
 
-  <div class="section">
+<div class="hero">
 
-    <div class="section-head">
-      <h2>📂 ক্যাটাগরি</h2>
-      <button class="see-all" onclick="showPage('category')">
-        সব দেখুন →
-      </button>
-    </div>
+<h1>
+বাংলাদেশের সংবাদপত্র
+</h1>
 
-    <div class="category-grid">
-
-      <div class="category" onclick="openCategory('দৈনিক')">
-        <span class="category-icon">📰</span>
-        <span class="category-title">দৈনিক</span>
-      </div>
-
-      <div class="category" onclick="openCategory('সাপ্তাহিক')">
-        <span class="category-icon">📅</span>
-        <span class="category-title">সাপ্তাহিক</span>
-      </div>
-
-      <div class="category" onclick="openCategory('মাসিক')">
-        <span class="category-icon">📖</span>
-        <span class="category-title">মাসিক</span>
-      </div>
-
-      <div class="category" onclick="openCategory('ইসলামিক')">
-        <span class="category-icon">☪️</span>
-        <span class="category-title">ইসলামিক</span>
-      </div>
-
-      <div class="category" onclick="openCategory('অনলাইন')">
-        <span class="category-icon">🌐</span>
-        <span class="category-title">অনলাইন</span>
-      </div>
-
-      <div class="category" onclick="openCategory('আঞ্চলিক')">
-        <span class="category-icon">📍</span>
-        <span class="category-title">আঞ্চলিক</span>
-      </div>
-
-    </div>
-  </div>
+<p>
+দেশের বিভিন্ন ধরনের সংবাদপত্র ও সাময়িকীর তথ্য সহজে খুঁজে দেখুন।
+</p>
 
 
-  <!-- AREA -->
+<div class="search">
 
-  <div class="section">
+<input
+id="heroSearch"
+type="search"
+autocomplete="off"
+placeholder="পত্রিকার নাম, জেলা, বিভাগ বা ক্যাটাগরি লিখুন..."
+oninput="searchLive(this.value)"
+>
 
-    <div class="section-head">
-      <h2>📍 জনপ্রিয় এলাকা</h2>
-      <button class="see-all" onclick="showPage('location')">
-        সব এলাকা →
-      </button>
-    </div>
+<button
+onclick="runSearch(document.getElementById('heroSearch').value)"
+>
+খুঁজুন
+</button>
 
-    <div class="area-grid">
+</div>
 
-      <div class="area" onclick="openLocation('ঢাকা')">ঢাকা</div>
-      <div class="area" onclick="openLocation('চট্টগ্রাম')">চট্টগ্রাম</div>
-      <div class="area" onclick="openLocation('রাজশাহী')">রাজশাহী</div>
-      <div class="area" onclick="openLocation('খুলনা')">খুলনা</div>
-      <div class="area" onclick="openLocation('বরিশাল')">বরিশাল</div>
-      <div class="area" onclick="openLocation('সিলেট')">সিলেট</div>
-      <div class="area" onclick="openLocation('রংপুর')">রংপুর</div>
-      <div class="area" onclick="openLocation('ময়মনসিংহ')">ময়মনসিংহ</div>
-
-    </div>
-  </div>
+</div>
 
 
-  <!-- POPULAR NEWSPAPERS -->
+<!-- =======================================================
+     FILTER
+     HERO-এর পরেই রাখা হয়েছে
+     ======================================================= -->
 
-  <div class="section">
+<section class="section filterSection">
 
-    <div class="section-head">
-      <h2>⭐ জনপ্রিয় পত্রিকা</h2>
-      <button class="see-all" onclick="showPage('category')">
-        সব দেখুন →
-      </button>
-    </div>
+<div class="sectionHead">
 
-    <div id="homeGrid" class="newspaper-grid"></div>
+<h2>
+খুঁজে দেখুন
+</h2>
 
-  </div>
+</div>
 
 
-  <!-- ADD -->
+<div class="filters">
 
-  <div class="section">
 
-    <div class="form-box" style="text-align:center">
+<select
+id="fFrequency"
+onchange="currentPage=1;applyFilters()"
+>
 
-      <div style="font-size:35px">➕</div>
+<option value="">
+সব প্রকাশনা
+</option>
 
-      <h2>আপনার পত্রিকা যোগ করুন</h2>
+</select>
 
-      <p style="color:var(--muted);font-size:13px;margin:5px 0 15px">
-        আপনার পত্রিকার তথ্য আমাদের ডিরেক্টরিতে যুক্ত করার জন্য পাঠান।
-      </p>
 
-      <button class="main-button" onclick="showPage('add')">
-        পত্রিকা যোগ করার ফর্ম
-      </button>
+<select
+id="fCategory"
+onchange="currentPage=1;applyFilters()"
+>
 
-    </div>
+<option value="">
+সব ক্যাটাগরি
+</option>
 
-  </div>
+</select>
+
+
+<select
+id="fDivision"
+onchange="currentPage=1;applyFilters()"
+>
+
+<option value="">
+সব বিভাগ
+</option>
+
+</select>
+
+
+</div>
 
 </section>
 
 
-<!-- ================= CATEGORY ================= -->
+<!-- =======================================================
+     PUBLICATION FREQUENCY
+     ======================================================= -->
 
-<section id="category" class="page">
+<section class="section">
 
-  <button class="back-btn" onclick="showPage('home')">
-    ← হোমে ফিরে যান
-  </button>
+<div class="sectionHead">
 
-  <h1 class="page-title" id="categoryTitle">
-    সকল পত্রিকা
-  </h1>
+<h2>
+প্রকাশনার ধরন
+</h2>
 
-  <p class="page-subtitle">
-    ক্যাটাগরি অনুযায়ী পত্রিকা খুঁজে দেখুন।
-  </p>
+</div>
 
-  <div class="filter-row">
 
-    <button class="filter active" onclick="filterCategory('সব',this)">
-      সব
-    </button>
-
-    <button class="filter" onclick="filterCategory('দৈনিক',this)">
-      দৈনিক
-    </button>
-
-    <button class="filter" onclick="filterCategory('সাপ্তাহিক',this)">
-      সাপ্তাহিক
-    </button>
-
-    <button class="filter" onclick="filterCategory('মাসিক',this)">
-      মাসিক
-    </button>
-
-    <button class="filter" onclick="filterCategory('ইসলামিক',this)">
-      ইসলামিক
-    </button>
-
-    <button class="filter" onclick="filterCategory('অনলাইন',this)">
-      অনলাইন
-    </button>
-
-    <button class="filter" onclick="filterCategory('আঞ্চলিক',this)">
-      আঞ্চলিক
-    </button>
-
-  </div>
-
-  <div id="categoryGrid" class="newspaper-grid"></div>
+<div
+id="frequencyChips"
+class="scroll"
+>
+</div>
 
 </section>
 
 
-<!-- ================= LOCATION ================= -->
+<!-- =======================================================
+     CATEGORY
+     ======================================================= -->
 
-<section id="location" class="page">
+<section class="section">
 
-  <button class="back-btn" onclick="showPage('home')">
-    ← হোমে ফিরে যান
-  </button>
+<div class="sectionHead">
 
-  <h1 class="page-title">📍 এলাকা অনুযায়ী পত্রিকা</h1>
+<h2>
+ক্যাটাগরি
+</h2>
 
-  <p class="page-subtitle">
-    বিভাগ → জেলা → উপজেলা/থানা অনুযায়ী পত্রিকা খুঁজুন।
-  </p>
+</div>
 
-  <div class="location-box">
 
-    <div class="location-step" onclick="showDivision('ঢাকা')">
-      <strong>🏙 ঢাকা বিভাগ</strong>
-      <span>ঢাকা, গাজীপুর, নারায়ণগঞ্জসহ অন্যান্য জেলা</span>
-    </div>
-
-    <div class="location-step" onclick="showDivision('চট্টগ্রাম')">
-      <strong>🏙 চট্টগ্রাম বিভাগ</strong>
-      <span>চট্টগ্রাম, কুমিল্লা, নোয়াখালীসহ অন্যান্য জেলা</span>
-    </div>
-
-    <div class="location-step" onclick="showDivision('রাজশাহী')">
-      <strong>🏙 রাজশাহী বিভাগ</strong>
-      <span>রাজশাহী, বগুড়া, নওগাঁসহ অন্যান্য জেলা</span>
-    </div>
-
-    <div class="location-step" onclick="showDivision('খুলনা')">
-      <strong>🏙 খুলনা বিভাগ</strong>
-      <span>খুলনা, যশোর, কুষ্টিয়াসহ অন্যান্য জেলা</span>
-    </div>
-
-    <div class="location-step" onclick="showDivision('বরিশাল')">
-      <strong>🏙 বরিশাল বিভাগ</strong>
-      <span>বরিশাল, পটুয়াখালীসহ অন্যান্য জেলা</span>
-    </div>
-
-    <div class="location-step" onclick="showDivision('সিলেট')">
-      <strong>🏙 সিলেট বিভাগ</strong>
-      <span>সিলেট, মৌলভীবাজারসহ অন্যান্য জেলা</span>
-    </div>
-
-    <div class="location-step" onclick="showDivision('রংপুর')">
-      <strong>🏙 রংপুর বিভাগ</strong>
-      <span>রংপুর, দিনাজপুরসহ অন্যান্য জেলা</span>
-    </div>
-
-    <div class="location-step" onclick="showDivision('ময়মনসিংহ')">
-      <strong>🏙 ময়মনসিংহ বিভাগ</strong>
-      <span>ময়মনসিংহ, জামালপুরসহ অন্যান্য জেলা</span>
-    </div>
-
-  </div>
-
-  <div id="locationResults" style="margin-top:20px"></div>
+<div
+id="categoryChips"
+class="scroll"
+>
+</div>
 
 </section>
 
 
-<!-- ================= DETAILS ================= -->
+<!-- =======================================================
+     DIVISION
+     ======================================================= -->
 
-<section id="details" class="page">
+<section class="section">
 
-  <div class="details">
+<div class="sectionHead">
 
-    <button class="back-btn" onclick="showPage('category')">
-      ← পত্রিকার তালিকায় ফিরে যান
-    </button>
+<h2>
+বিভাগ অনুযায়ী
+</h2>
 
-    <div id="detailsContent"></div>
-
-  </div>
-
-</section>
+</div>
 
 
-<!-- ================= SEARCH ================= -->
+<div
+id="divisionGrid"
+class="divisionGrid"
+>
 
-<section id="searchPage" class="page">
+<div class="loading">
+তথ্য লোড হচ্ছে...
+</div>
 
-  <button class="back-btn" onclick="showPage('home')">
-    ← হোমে ফিরে যান
-  </button>
-
-  <h1 class="page-title">🔎 অনুসন্ধানের ফলাফল</h1>
-
-  <p class="page-subtitle" id="searchText"></p>
-
-  <div id="searchGrid" class="newspaper-grid"></div>
+</div>
 
 </section>
 
 
-<!-- ================= ADD ================= -->
+<!-- =======================================================
+     POPULAR
+     ======================================================= -->
 
-<section id="add" class="page">
+<section class="section">
 
-  <button class="back-btn" onclick="showPage('home')">
-    ← হোমে ফিরে যান
-  </button>
+<div class="sectionHead">
 
-  <h1 class="page-title">➕ আপনার পত্রিকা যোগ করুন</h1>
+<h2>
+জনপ্রিয় পত্রিকা
+</h2>
 
-  <p class="page-subtitle">
-    নিচের তথ্য পূরণ করে পত্রিকার তথ্য পাঠানোর জন্য প্রস্তুত করুন।
-  </p>
+</div>
 
-  <div class="form-box">
 
-    <div class="form-group">
-      <label>পত্রিকার নাম</label>
-      <input id="addName" type="text" placeholder="পত্রিকার নাম">
-    </div>
+<div
+id="popularGrid"
+class="grid"
+>
 
-    <div class="form-group">
-      <label>ক্যাটাগরি</label>
-      <select id="addCategory">
-        <option>দৈনিক</option>
-        <option>সাপ্তাহিক</option>
-        <option>মাসিক</option>
-        <option>ইসলামিক</option>
-        <option>অনলাইন</option>
-        <option>আঞ্চলিক</option>
-      </select>
-    </div>
+<div class="loading">
+তথ্য লোড হচ্ছে...
+</div>
 
-    <div class="form-group">
-      <label>বিভাগ</label>
-      <input id="addDivision" type="text" placeholder="যেমন: রাজশাহী">
-    </div>
-
-    <div class="form-group">
-      <label>জেলা</label>
-      <input id="addDistrict" type="text" placeholder="যেমন: নওগাঁ">
-    </div>
-
-    <div class="form-group">
-      <label>লোগো / ছবির URL</label>
-      <input id="addImage" type="url" placeholder="https://...">
-    </div>
-
-    <div class="form-group">
-      <label>অফিসিয়াল ওয়েবসাইট</label>
-      <input id="addWebsite" type="url" placeholder="https://...">
-    </div>
-
-    <div class="form-group">
-      <label>সংক্ষিপ্ত পরিচিতি</label>
-      <textarea id="addDescription" placeholder="পত্রিকা সম্পর্কে সংক্ষিপ্ত তথ্য"></textarea>
-    </div>
-
-    <button class="main-button" onclick="submitForm()">
-      তথ্য পাঠানোর প্রস্তুতি নিন
-    </button>
-
-  </div>
+</div>
 
 </section>
 
 
-<!-- ================= ABOUT ================= -->
+<!-- =======================================================
+     ALL NEWSPAPERS
+     ======================================================= -->
 
-<section id="about" class="page">
+<section class="section">
 
-  <button class="back-btn" onclick="showPage('home')">
-    ← হোমে ফিরে যান
-  </button>
+<div class="sectionHead">
 
-  <div class="about-box">
+<h2>
+সব পত্রিকা
+</h2>
 
-    <h2>ℹ️ বাংলাদেশ পত্রিকা ডিরেক্টরি</h2>
+</div>
 
-    <p>
-      বাংলাদেশের বিভিন্ন ধরনের পত্রিকা এক জায়গায়
-      খুঁজে পাওয়ার জন্য এই ডিরেক্টরি তৈরি করা হয়েছে।
-    </p>
 
-    <p>
-      ব্যবহারকারী পত্রিকার নাম, ক্যাটাগরি, বিভাগ,
-      জেলা বা এলাকা অনুযায়ী পত্রিকা খুঁজে দেখতে পারবেন।
-    </p>
+<div
+id="allGrid"
+class="grid"
+>
 
-    <p>
-      প্রতিটি পত্রিকার বিস্তারিত তথ্য দেখার পর
-      “পত্রিকাটি পড়ুন” বাটনের মাধ্যমে মূল পত্রিকার
-      অফিসিয়াল ওয়েবসাইটে যেতে পারবেন।
-    </p>
+<div class="loading">
+তথ্য লোড হচ্ছে...
+</div>
 
-    <p>
-      ভবিষ্যতে এই ডিরেক্টরির তথ্য Google Sheets-এর
-      মাধ্যমে পরিচালনা করা যাবে।
-    </p>
+</div>
 
-  </div>
+
+<div
+id="allPagination"
+class="pagination"
+>
+</div>
 
 </section>
+
+
+<!-- =======================================================
+     SEARCH VIEW
+     ======================================================= -->
+
+<section
+id="searchView"
+class="section"
+style="display:none"
+>
+
+
+<div class="sectionHead">
+
+<h2>
+অনুসন্ধানের ফলাফল
+</h2>
+
+
+<button
+class="btn secondary"
+onclick="goHome()"
+>
+ফিরে যান
+</button>
+
+</div>
+
+
+<div class="search">
+
+<input
+id="searchInput"
+type="search"
+autocomplete="off"
+placeholder="অনুসন্ধান করুন..."
+oninput="runSearch(this.value)"
+>
+
+<button
+onclick="runSearch(document.getElementById('searchInput').value)"
+>
+খুঁজুন
+</button>
+
+</div>
+
+
+<div
+id="searchGrid"
+class="grid"
+style="margin-top:14px"
+>
+</div>
+
+
+</section>
+
+
+<!-- =======================================================
+     ADD NEWSPAPER CTA
+     ======================================================= -->
+
+<div class="cta">
+
+<h2>
+আপনার পত্রিকা যুক্ত করুন
+</h2>
+
+<p>
+তালিকায় কোনো পত্রিকা না থাকলে অথবা নতুন কোনো পত্রিকার তথ্য যুক্ত করতে চাইলে আমাদের জানান।
+</p>
+
+
+<a
+class="btn primary"
+href="https://forms.gle/378WKzkQqqkqBRjt5"
+target="_blank"
+rel="noopener"
+>
+＋ পত্রিকা যোগ করুন
+</a>
+
+</div>
+
+
+<!-- =======================================================
+     PROMO
+     ======================================================= -->
+
+<div class="promo">
+
+<h2>
+পত্রিকা সমাহার
+</h2>
+
+<p>
+বাংলাদেশের দৈনিক, সাপ্তাহিক, মাসিক, আঞ্চলিক, ইসলামিকসহ বিভিন্ন ধরনের সংবাদপত্র ও সাময়িকীর তথ্য এক জায়গায় সহজে খুঁজে পাওয়ার জন্য এই ডিরেক্টরি তৈরি করা হয়েছে।
+</p>
+
+</div>
+
+
+<!-- =======================================================
+     FOOTER
+     ======================================================= -->
+
+<footer class="footer">
+
+
+<div class="footerGrid">
+
+
+<div>
+
+<h3>
+পত্রিকা সমাহার
+</h3>
+
+<p>
+বাংলাদেশের সংবাদপত্র ও সাময়িকীর তথ্যভিত্তিক ডিরেক্টরি।
+</p>
+
+</div>
+
+
+<div>
+
+<h3>
+ক্যাটাগরি
+</h3>
+
+<div id="footerCategories">
+</div>
+
+</div>
+
+
+<div>
+
+<h3>
+দ্রুত লিংক
+</h3>
+
+
+<a
+href="#"
+onclick="goHome();return false"
+>
+হোম
+</a>
+
+
+<a
+href="#"
+onclick="showAll();return false"
+>
+সব পত্রিকা
+</a>
+
+
+<a
+href="#"
+onclick="focusSearch();return false"
+>
+অনুসন্ধান
+</a>
+
+</div>
+
+
+<div>
+
+<h3>
+অন্যান্য
+</h3>
+
+
+<a
+href="https://forms.gle/378WKzkQqqkqBRjt5"
+target="_blank"
+rel="noopener"
+>
+পত্রিকা যোগ করুন
+</a>
+
+
+<a
+href="#"
+onclick="showAbout();return false"
+>
+ডিরেক্টরি সম্পর্কে
+</a>
+
+</div>
+
+
+</div>
+
+
+<p style="margin-top:24px">
+
+©
+<span id="year"></span>
+পত্রিকা সমাহার
+
+</p>
+
+
+</footer>
+
+
+</section>
+
+
+<!-- =========================================================
+     ALL VIEW
+     ========================================================= -->
+
+<section
+id="allView"
+style="display:none"
+>
+
+
+<div class="sectionHead">
+
+<h2>
+সব পত্রিকা
+</h2>
+
+
+<button
+class="btn secondary"
+onclick="goHome()"
+>
+হোম
+</button>
+
+</div>
+
+
+<div class="filters">
+
+
+<select
+id="fFrequency2"
+onchange="syncFilter('fFrequency',this.value)"
+>
+
+<option value="">
+সব প্রকাশনা
+</option>
+
+</select>
+
+
+<select
+id="fCategory2"
+onchange="syncFilter('fCategory',this.value)"
+>
+
+<option value="">
+সব ক্যাটাগরি
+</option>
+
+</select>
+
+
+<select
+id="fDivision2"
+onchange="syncFilter('fDivision',this.value)"
+>
+
+<option value="">
+সব বিভাগ
+</option>
+
+</select>
+
+
+</div>
+
+
+<div
+id="allGrid2"
+class="grid"
+style="margin-top:14px"
+>
+</div>
+
+
+<div
+id="allPagination2"
+class="pagination"
+>
+</div>
+
+
+</section>
+
+
+<!-- =========================================================
+     ABOUT VIEW
+     ========================================================= -->
+
+<section
+id="aboutView"
+style="display:none"
+>
+
+
+<div class="cta">
+
+<h2>
+পত্রিকা সমাহার সম্পর্কে
+</h2>
+
+
+<p>
+বাংলাদেশের বিভিন্ন সংবাদপত্র ও সাময়িকীর তথ্য এক জায়গায় উপস্থাপনের জন্য এই ডিরেক্টরি তৈরি করা হয়েছে। ব্যবহারকারীরা যেন সহজে পত্রিকার নাম, প্রকাশনার ধরন, ক্যাটাগরি, বিভাগ ও অন্যান্য তথ্যের মাধ্যমে প্রয়োজনীয় পত্রিকা খুঁজে পেতে পারেন—এই লক্ষ্যেই পত্রিকা সমাহারের কাজ এগিয়ে চলছে।
+</p>
+
+
+<button
+class="btn primary"
+onclick="goHome()"
+>
+হোমে ফিরে যান
+</button>
+
+</div>
+
+
+<!-- SUPPORT CARD -->
+
+<div class="supportCard">
+
+<h2>
+আমাদের কাজ চলমান — আপনার সহযোগিতা প্রয়োজন
+</h2>
+
+
+<p>
+পত্রিকা সমাহারে বাংলাদেশের বিভিন্ন সংবাদপত্র ও সাময়িকীর তথ্য ধীরে ধীরে যুক্ত করা হচ্ছে। এই তালিকাটি আরও নির্ভুল, পূর্ণাঙ্গ ও সবার জন্য উপকারী করতে আপনার সহযোগিতা আমাদের জন্য গুরুত্বপূর্ণ।
+</p>
+
+
+<ul class="supportList">
+
+<li>
+কোনো পত্রিকা তালিকায় না থাকলে আমাদের জানাতে পারেন।
+</li>
+
+<li>
+কোনো পত্রিকার তথ্য ভুল বা পুরোনো হলে সংশোধনের জন্য জানাতে পারেন।
+</li>
+
+<li>
+সঠিক তথ্য দেওয়ার মাধ্যমে পত্রিকা সমাহারকে আরও সমৃদ্ধ করতে পারেন।
+</li>
+
+</ul>
+
+
+<a
+class="btn primary"
+href="https://forms.gle/378WKzkQqqkqBRjt5"
+target="_blank"
+rel="noopener"
+>
+＋ তথ্য পাঠান / পত্রিকা যোগ করুন
+</a>
+
+
+</div>
+
+
+</section>
+
 
 </main>
 
 
-<footer>
-  বাংলাদেশ পত্রিকা ডিরেক্টরি • Demo Version
-</footer>
+<!-- =========================================================
+     BOTTOM NAVIGATION
+     ========================================================= -->
+
+<nav class="bottom">
+
+
+<button
+onclick="goHome()"
+>
+
+<b>
+⌂
+</b>
+
+হোম
+
+</button>
+
+
+<button
+onclick="showAll()"
+>
+
+<b>
+▦
+</b>
+
+সব
+
+</button>
+
+
+<button
+onclick="focusSearch()"
+>
+
+<b>
+⌕
+</b>
+
+সার্চ
+
+</button>
+
+
+<button
+onclick="showAbout()"
+>
+
+<b>
+ⓘ
+</b>
+
+সম্পর্কে
+
+</button>
+
+
+</nav>
+
+
+<!-- =========================================================
+     DETAIL MODAL
+     ========================================================= -->
+
+<div
+id="modal"
+class="modal"
+onclick="if(event.target===this)closeModal()"
+>
+
+
+<div class="modalBox">
+
+
+<div class="modalTop">
+
+<button
+class="close"
+onclick="closeModal()"
+aria-label="বন্ধ করুন"
+>
+×
+</button>
+
+</div>
+
+
+<div id="detail">
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     EXTERNAL WEBSITE CONFIRMATION MODAL
+     ========================================================= -->
+
+<div
+id="externalModal"
+class="modal"
+onclick="if(event.target===this)closeExternalModal()"
+>
+
+
+<div class="modalBox">
+
+
+<div class="modalTop">
+
+<button
+class="close"
+onclick="closeExternalModal()"
+aria-label="বন্ধ করুন"
+>
+×
+</button>
+
+</div>
+
+
+<div class="externalBox">
+
+
+<div class="externalIcon">
+↗
+</div>
+
+
+<h2>
+অফিসিয়াল ওয়েবসাইটে যাওয়ার আগে
+</h2>
+
+
+<p>
+আপনি এখন এই পত্রিকার নিজস্ব ওয়েবসাইটে যেতে যাচ্ছেন। পত্রিকা সমাহার পত্রিকার মালিক, প্রকাশক বা মূল কনটেন্টের নিয়ন্ত্রক নয়। পরবর্তী পেজটি সংশ্লিষ্ট পত্রিকার নিজস্ব ওয়েবসাইটে খুলবে।
+</p>
+
+
+<div
+id="externalUrl"
+class="externalUrl"
+>
+</div>
+
+
+<div class="externalActions">
+
+
+<button
+class="btn secondary"
+onclick="closeExternalModal()"
+>
+ফিরে যান
+</button>
+
+
+<button
+class="btn primary"
+onclick="continueExternal()"
+>
+এগিয়ে যান
+</button>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<!-- =========================================================
+     TOAST
+     ========================================================= -->
+
+<div
+id="toast"
+class="toast"
+>
+</div>
+
+
+<!-- =========================================================
+     GOOGLE TRANSLATE HOLDER
+     ========================================================= -->
+
+<div id="google_translate_element"></div>
 
 
 <script>
 
-/* ================= DATA ================= */
+/* =========================================================
+   DATA SERVICE
+   ========================================================= */
 
-const newspapers = [
 
-{
- name:"প্রথম আলো",
- category:"দৈনিক",
- district:"ঢাকা",
- division:"ঢাকা",
- image:"https://placehold.co/600x400/075e45/ffffff?text=Prothom+Alo",
- website:"https://www.prothomalo.com",
- description:"বাংলাদেশের একটি জনপ্রিয় দৈনিক সংবাদপত্র। এটি দেশের বিভিন্ন জাতীয় ও আন্তর্জাতিক সংবাদ প্রকাশ করে।"
-},
+/*
+   GOOGLE APPS SCRIPT DATA SERVICE
 
-{
- name:"ইত্তেফাক",
- category:"দৈনিক",
- district:"ঢাকা",
- division:"ঢাকা",
- image:"https://placehold.co/600x400/164e8c/ffffff?text=Ittefaq",
- website:"https://www.ittefaq.com.bd",
- description:"বাংলাদেশের পরিচিত দৈনিক সংবাদপত্রগুলোর একটি।"
-},
+   আপনার দেওয়া Apps Script URL রাখা হয়েছে।
+*/
 
-{
- name:"যুগান্তর",
- category:"দৈনিক",
- district:"ঢাকা",
- division:"ঢাকা",
- image:"https://placehold.co/600x400/735016/ffffff?text=Jugantor",
- website:"https://www.jugantor.com",
- description:"জাতীয়, রাজনীতি, অর্থনীতি ও বিভিন্ন বিষয়ের সংবাদ প্রকাশ করে।"
-},
+const APPS_SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbzEuKc60X6KDIC3dmjUmxA_0XNbivriwKbm3ZGCol9oi0EkfEpNuABibklarI8gLHfn/exec";
 
-{
- name:"নয়া দিগন্ত",
- category:"দৈনিক",
- district:"ঢাকা",
- division:"ঢাকা",
- image:"https://placehold.co/600x400/72263a/ffffff?text=Naya+Digianta",
- website:"https://www.dailynayadiganta.com",
- description:"বাংলাদেশের একটি দৈনিক সংবাদপত্র।"
-},
 
-{
- name:"সাপ্তাহিক সংবাদ",
- category:"সাপ্তাহিক",
- district:"রাজশাহী",
- division:"রাজশাহী",
- image:"https://placehold.co/600x400/776018/ffffff?text=Weekly",
- website:"https://example.com",
- description:"এটি ডেমো ডাটা। পরে প্রকৃত পত্রিকার তথ্য দিয়ে পরিবর্তন করা যাবে।"
-},
+/*
+   GOOGLE FORM
+*/
 
-{
- name:"মাসিক জীবন",
- category:"মাসিক",
- district:"চট্টগ্রাম",
- division:"চট্টগ্রাম",
- image:"https://placehold.co/600x400/38547a/ffffff?text=Monthly",
- website:"https://example.com",
- description:"মাসিক প্রকাশনার একটি ডেমো উদাহরণ।"
-},
+const FORM_URL =
+"https://forms.gle/378WKzkQqqkqBRjt5";
 
-{
- name:"ইসলামিক বার্তা",
- category:"ইসলামিক",
- district:"বগুড়া",
- division:"রাজশাহী",
- image:"https://placehold.co/600x400/17634e/ffffff?text=Islamic",
- website:"https://example.com",
- description:"ইসলামিক প্রকাশনার ডেমো উদাহরণ।"
-},
 
-{
- name:"বাংলা অনলাইন",
- category:"অনলাইন",
- district:"সিলেট",
- division:"সিলেট",
- image:"https://placehold.co/600x400/374151/ffffff?text=Online",
- website:"https://example.com",
- description:"অনলাইন সংবাদমাধ্যমের ডেমো উদাহরণ।"
-},
+/*
+   FALLBACK SETTINGS
+*/
 
-{
- name:"উত্তরের কণ্ঠ",
- category:"আঞ্চলিক",
- district:"নওগাঁ",
- division:"রাজশাহী",
- image:"https://placehold.co/600x400/49654f/ffffff?text=Regional",
- website:"https://example.com",
- description:"আঞ্চলিক পত্রিকার ডেমো উদাহরণ।"
+const SHEET_ID = "";
+
+const TAB_NAME = "Form Responses 1";
+
+
+/*
+   প্রতি পেজে কয়টি পত্রিকা
+*/
+
+const PER_PAGE = 20;
+
+
+/* =========================================================
+   GOOGLE SHEET COLUMN MAPPING
+   ========================================================= */
+
+const COLUMNS = {
+
+id:"ID",
+
+regno:"RegNo",
+
+name:"Name",
+
+language:"Language",
+
+frequency:"Frequency",
+
+category:"Category",
+
+country:"Country",
+
+division:"Division",
+
+district:"District",
+
+upazila:"Upazila",
+
+logo:"LogoURL",
+
+description:"Description",
+
+website:"Website",
+
+tags:"Tags",
+
+pdf:"Pdf",
+
+status:"Status"
+
+};
+
+
+/* =========================================================
+   GLOBAL VARIABLES
+   ========================================================= */
+
+let allNewspapers = [];
+
+let filtered = [];
+
+let currentPage = 1;
+
+let currentSearch = "";
+
+let currentFrequency = "";
+
+let currentCategory = "";
+
+let currentDivision = "";
+
+let pendingExternalUrl = "";
+
+let pendingExternalName = "";
+
+let searchTimer = null;
+
+
+/* =========================================================
+   BASIC HELPER
+   ========================================================= */
+
+function $(id){
+
+return document.getElementById(id);
+
 }
+
+
+/* =========================================================
+   GET FIELD
+   ========================================================= */
+
+function getField(item,key){
+
+if(!item || typeof item !== "object"){
+
+return "";
+
+}
+
+
+const wanted =
+COLUMNS[key] || key;
+
+
+if(
+item[wanted] !== undefined &&
+item[wanted] !== null
+){
+
+return String(
+item[wanted]
+).trim();
+
+}
+
+
+const target =
+String(wanted)
+.trim()
+.toLowerCase();
+
+
+for(
+const k of Object.keys(item)
+){
+
+if(
+String(k)
+.trim()
+.toLowerCase()
+===
+target
+){
+
+return item[k] == null
+? ""
+: String(item[k]).trim();
+
+}
+
+}
+
+
+return "";
+
+}
+
+
+/* =========================================================
+   NORMALIZE
+   ========================================================= */
+
+function norm(value){
+
+return String(value ?? "")
+.trim()
+.toLowerCase()
+.replace(/\s+/g," ");
+
+}
+
+
+/* =========================================================
+   SPLIT VALUES
+   ========================================================= */
+
+function splitValues(value){
+
+return String(value ?? "")
+.split(/[,،|;/]+/)
+.map(
+x=>x.trim()
+)
+.filter(Boolean);
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+   ========================================================= */
+
+function esc(value){
+
+return String(value ?? "")
+.replace(
+/[&<>"']/g,
+function(c){
+
+return {
+
+"&":"&amp;",
+
+"<":"&lt;",
+
+">":"&gt;",
+
+'"':"&quot;",
+
+"'":"&#39;"
+
+}[c];
+
+}
+);
+
+}
+
+
+/* =========================================================
+   SAFE URL
+   ========================================================= */
+
+function safeUrl(value){
+
+let url =
+String(value ?? "")
+.trim();
+
+
+if(!url){
+
+return "";
+
+}
+
+
+/*
+   www.example.com
+   example.com
+   http://...
+   https://...
+*/
+
+if(
+!/^https?:\/\//i.test(url)
+){
+
+url =
+"https://" +
+url;
+
+}
+
+
+try{
+
+const u =
+new URL(url);
+
+
+if(
+u.protocol === "http:" ||
+u.protocol === "https:"
+){
+
+return u.href;
+
+}
+
+return "";
+
+}catch(e){
+
+return "";
+
+}
+
+}
+
+
+/* =========================================================
+   IMAGE URL NORMALIZER
+   ========================================================= */
+
+function normalizeImageUrl(value){
+
+let url =
+String(value ?? "")
+.trim();
+
+
+if(!url){
+
+return "";
+
+}
+
+
+/*
+   Remove wrapping quotes
+*/
+
+url =
+url
+.replace(/^["']+/,"")
+.replace(/["']+$/,"")
+.trim();
+
+
+/*
+   Google Drive:
+   /file/d/FILE_ID/view
+*/
+
+let match =
+url.match(
+/drive\.google\.com\/file\/d\/([^/]+)/i
+);
+
+
+if(match && match[1]){
+
+return:
+`https://drive.google.com/uc?export=view&id=${encodeURIComponent(match[1])}`;
+
+}
+
+
+/*
+   Google Drive:
+   open?id=FILE_ID
+*/
+
+try{
+
+const u =
+new URL(
+url,
+location.href
+);
+
+
+if(
+u.hostname.includes("drive.google.com")
+){
+
+const id =
+u.searchParams.get("id");
+
+
+if(id){
+
+return:
+`https://drive.google.com/uc?export=view&id=${encodeURIComponent(id)}`;
+
+}
+
+}
+
+}catch(e){}
+
+
+/*
+   Google Drive uc?id=
+*/
+
+if(
+url.includes("drive.google.com/uc")
+){
+
+try{
+
+const u =
+new URL(url);
+
+
+const id =
+u.searchParams.get("id");
+
+
+if(id){
+
+return:
+`https://drive.google.com/uc?export=view&id=${encodeURIComponent(id)}`;
+
+}
+
+}catch(e){}
+
+}
+
+
+return url;
+
+}
+
+
+/* =========================================================
+   IMAGE FALLBACK
+   ========================================================= */
+
+function imageFallback(img,name){
+
+if(!img){
+
+return;
+
+}
+
+
+if(
+img.dataset.failed === "1"
+){
+
+return;
+
+}
+
+
+img.dataset.failed = "1";
+
+
+const parent =
+img.parentElement;
+
+
+if(!parent){
+
+return;
+
+}
+
+
+const initial =
+firstName(name);
+
+
+parent.innerHTML =
+`
+<div class="placeholder">
+${esc(initial)}
+</div>
+`;
+
+}
+
+
+/* =========================================================
+   FIRST NAME
+   ========================================================= */
+
+function firstName(name){
+
+const text =
+String(name || "")
+.trim();
+
+
+if(!text){
+
+return "প";
+
+}
+
+
+return text.charAt(0);
+
+}
+
+
+/* =========================================================
+   TEXT FIELD SEARCH
+   ========================================================= */
+
+function searchableText(item){
+
+const fields = [
+
+getField(item,"name"),
+
+getField(item,"language"),
+
+getField(item,"frequency"),
+
+getField(item,"category"),
+
+getField(item,"country"),
+
+getField(item,"division"),
+
+getField(item,"district"),
+
+getField(item,"upazila"),
+
+getField(item,"description"),
+
+getField(item,"tags"),
+
+getField(item,"regno")
 
 ];
 
 
-/* ================= PAGE SYSTEM ================= */
-
-function showPage(page){
-
-  document.querySelectorAll(".page").forEach(function(p){
-    p.classList.remove("active");
-  });
-
-  document.getElementById(page).classList.add("active");
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
+return norm(
+fields.join(" ")
+);
 
 }
 
 
-/* ================= CARD ================= */
+/* =========================================================
+   STATUS
+   ========================================================= */
 
-functio
+function isLive(item){
+
+const status =
+norm(
+getField(item,"status")
+);
+
+
+if(!status){
+
+return false;
+
+}
+
+
+return [
+"live",
+"active",
+"published",
+"publish",
+"approved",
+"চালু",
+"সক্রিয়",
+"সক্রিয়",
+"প্রকাশিত"
+].includes(status);
+
+}
+
+
+/* =========================================================
+   LOAD DATA
+   ========================================================= */
+
+async function loadNewspapers(){
+
+const allGrid =
+$("allGrid");
+
+
+const popularGrid =
+$("popularGrid");
+
+
+if(allGrid){
+
+allGrid.innerHTML =
+`
+<div class="loading">
+তথ্য লোড হচ্ছে
+<span class="loadingDot"></span>
+<span class="loadingDot"></span>
+<span class="loadingDot"></span>
+</div>
+`;
+
+}
+
+
+if(popularGrid){
+
+popularGrid.innerHTML =
+`
+<div class="loading">
+তথ্য লোড হচ্ছে
+<span class="loadingDot"></span>
+<span class="loadingDot"></span>
+<span class="loadingDot"></span>
+</div>
+`;
+
+}
+
+
+try{
+
+if(!APPS_SCRIPT_URL){
+
+throw new Error(
+"Apps Script URL নেই"
+);
+
+}
+
+
+const response =
+await fetch(
+APPS_SCRIPT_URL,
+{
+method:"GET",
+redirect:"follow",
+cache:"no-store"
+}
+);
+
+
+if(!response.ok){
+
+throw new Error(
+"Data service response failed: " +
+response.status
+);
+
+}
+
+
+const data =
+await response.json();
+
+
+if(!Array.isArray(data)){
+
+throw new Error(
+"Data format is not array"
+);
+
+}
+
+
+allNewspapers =
+data.filter(
+item => isLive(item)
+);
+
+
+/*
+   If all rows have blank status,
+   don't accidentally show them.
+*/
+
+if(
+data.length > 0 &&
+allNewspapers.length === 0
+){
+
+const hasAnyStatus =
+data.some(
+item =>
+getField(item,"status")
+);
+
+if(!hasAnyStatus){
+
+allNewspapers =
+data;
+
+}
+
+}
+
+
+setStatus(
+allNewspapers.length +
+"টি পত্রিকার তথ্য পাওয়া গেছে",
+true
+);
+
+
+}catch(error){
+
+console.error(
+"Data loading error:",
+error
+);
+
+
+allNewspapers = [];
+
+
+setStatus(
+"তথ্য লোড করা যাচ্ছে না। Google Sheet Data Service পরীক্ষা করুন।"
+);
+
+
+if(allGrid){
+
+allGrid.innerHTML =
+`
+<div class="empty">
+
+<h3>
+তথ্য পাওয়া যাচ্ছে না
+</h3>
+
+<p>
+Google Sheet থেকে তথ্য লোড করা সম্ভব হয়নি।
+</p>
+
+<button
+class="btn primary"
+onclick="loadNewspapers()"
+>
+আবার চেষ্টা করুন
+</button>
+
+</div>
+`;
+
+}
+
+
+if(popularGrid){
+
+popularGrid.innerHTML =
+`
+<div class="empty">
+তথ্য লোড করা যাচ্ছে না।
+</div>
+`;
+
+}
+
+}
+
+
+buildFrequencyChips();
+
+buildCategoryChips();
+
+buildDivisionCards();
+
+buildFilterOptions();
+
+buildPopularSection();
+
+buildFooterCategories();
+
+applyFilters();
+
+}
+
+
+/* =========================================================
+   NOTICE
+   ========================================================= */
+
+function setStatus(text,success=false){
+
+const el =
+$("noticeText");
+
+
+if(!el){
+
+return;
+
+}
+
+
+el.textContent =
+text;
+
+}
+
+
+/* =========================================================
+   DRAWER
+   ========================================================= */
+
+function openDrawer(){
+
+const drawer =
+$("drawer");
+
+
+if(drawer){
+
+drawer.classList.add("open");
+
+}
+
+}
+
+
+function closeDrawer(){
+
+const drawer =
+$("drawer");
+
+
+if(drawer){
+
+drawer.classList.remove("open");
+
+}
+
+}
+
+
+/* =========================================================
+   THEME
+   ========================================================= */
+
+function toggleTheme(){
+
+document.body.classList.toggle("dark");
+
+
+localStorage.setItem(
+"newsTheme",
+document.body.classList.contains("dark")
+? "dark"
+: "light"
+);
+
+}
+
+
+function loadTheme(){
+
+const theme =
+localStorage.getItem(
+"newsTheme"
+);
+
+
+if(theme === "dark"){
+
+document.body.classList.add("dark");
+
+}
+
+}
+
+
+/* =========================================================
+   LANGUAGE
+   ========================================================= */
+
+function toggleLang(){
+
+const select =
+document.querySelector(
+".goog-te-combo"
+);
+
+
+if(select){
+
+select.value =
+select.value === "en"
+? "bn"
+: "en";
+
+
+select.dispatchEvent(
+new Event("change")
+);
+
+return;
+
+}
+
+
+/*
+   Google Translate may not yet be loaded.
+*/
+
+showToast(
+"ভাষা পরিবর্তনের ব্যবস্থা প্রস্তুত হচ্ছে..."
+);
+
+}
+
+
+/* =========================================================
+   GOOGLE TRANSLATE
+   ========================================================= */
+
+function googleTranslateElementInit(){
+
+new google.translate.TranslateElement(
+{
+pageLanguage:"bn",
+includedLanguages:"bn,en",
+autoDisplay:false
+},
+"google_translate_element"
+);
+
+}
+
+
+/* =========================================================
+   SHOW ALL
+   ========================================================= */
+
+function showAll(){
+
+$("homeView").style.display =
+"block";
+
+$("searchView").style.display =
+"none";
+
+$("allView").style.display =
+"block";
+
+$("aboutView").style.display =
+"none";
+
+
+window.scrollTo(
+{
+top:0,
+behavior:"smooth"
+}
+);
+
+
+renderAllSecond();
+
+}
+
+
+/* =========================================================
+   ABOUT
+   ========================================================= */
+
+function showAbout(){
+
+$("homeView").style.display =
+"none";
+
+$("searchView").style.display =
+"none";
+
+$("allView").style.display =
+"none";
+
+$("aboutView").style.display =
+"block";
+
+
+window.scrollTo(
+{
+top:0,
+behavior:"smooth"
+}
+);
+
+}
+
+
+/* =========================================================
+   HOME
+   ========================================================= */
+
+function goHome(){
+
+$("homeView").style.display =
+"block";
+
+$("searchView").style.display =
+"none";
+
+$("allView").style.display =
+"none";
+
+$("aboutView").style.display =
+"none";
+
+
+window.scrollTo(
+{
+top:0,
+behavior:"smooth"
+}
+);
+
+}
+
+
+/* =========================================================
+   SEARCH FOCUS
+   ========================================================= */
+
+function focusSearch(){
+
+$("homeView").style.display =
+"none";
+
+$("allView").style.display =
+"none";
+
+$("aboutView").style.display =
+"none";
+
+$("searchView").style.display =
+"block";
+
+
+const hero =
+$("heroSearch");
+
+
+const search =
+$("searchInput");
+
+
+if(
+hero &&
+hero.value
+){
+
+search.value =
+hero.value;
+
+}
+
+
+window.scrollTo(
+{
+top:0,
+behavior:"smooth"
+}
+);
+
+
+setTimeout(
+()=>{
+if(search){
+search.focus();
+}
+},
+150
+);
+
+}
+
+
+/* =========================================================
+   LIVE SEARCH
+   ========================================================= */
+
+function searchLive(value){
+
+clearTimeout(
+searchTimer
+);
+
+
+const query =
+String(value || "")
+.trim();
+
+
+if(!query){
+
+return;
+
+}
+
+
+searchTimer =
+setTimeout(
+()=>{
+runSearch(query);
+},
+250
+);
+
+}
+
+
+/* =========================================================
+   RUN SEARCH
+   ========================================================= */
+
+function runSearch(value){
+
+const query =
+String(value || "")
+.trim();
+
+
+currentSearch =
+query;
+
+
+if(
+$("heroSearch") &&
+$("heroSearch").value !== query
+){
+
+$("heroSearch").value =
+query;
+
+}
+
+
+if(
+$("searchInput") &&
+$("searchInput").value !== query
+){
+
+$("searchInput").value =
+query;
+
+}
+
+
+$("homeView").style.display =
+"none";
+
+$("allView").style.display =
+"none";
+
+$("aboutView").style.display =
+"none";
+
+$("searchView").style.display =
+"block";
+
+
+const q =
+norm(query);
+
+
+let results;
+
+
+if(!q){
+
+results =
+allNewspapers.slice();
+
+}else{
+
+const words =
+q.split(/\s+/)
+.filter(Boolean);
+
+
+results =
+allNewspapers.filter(
+item => {
+
+const text =
+searchableText(item);
+
+
+return words.every(
+word =>
+text.includes(word)
+);
+
+}
+);
+
+}
+
+
+renderGrid(
+"searchGrid",
+results
+);
+
+
+window.scrollTo(
+{
+top:0,
+behavior:"smooth"
+}
+);
+
+}
+
+
+/* =========================================================
+   BUILD FREQUENCY CHIPS
+   ========================================================= */
+
+function buildFrequencyChips(){
+
+const box =
+$("frequencyChips");
+
+
+if(!box){
+
+return;
+
+}
+
+
+const values =
+uniqueValues(
+allNewspapers,
+"frequency"
+);
+
+
+box.innerHTML = "";
+
+
+const allBtn =
+document.createElement("button");
+
+
+allBtn.className =
+"chip";
+
+
+allBtn.textContent =
+"সব";
+
+
+allBtn.onclick =
+function(){
+
+currentFrequency =
+"";
+
+currentPage =
+1;
+
+$("fFrequency").value =
+"";
+
+applyFilters();
+
+};
+
+
+if(!currentFrequency){
+
+allBtn.classList.add(
+"active"
+);
+
+}
+
+
+box.appendChild(
+allBtn
+);
+
+
+values.forEach(
+value => {
+
+const btn =
+document.createElement("button");
+
+
+btn.className =
+"chip";
+
+
+if(
+norm(value) ===
+norm(currentFrequency)
+){
+
+btn.classList.add(
+"active"
+);
+
+}
+
+
+btn.textContent =
+value;
+
+
+btn.onclick =
+function(){
+
+currentFrequency =
+value;
+
+currentPage =
+1;
+
+$("fFrequency").value =
+value;
+
+
+buildFrequencyChips();
+
+applyFilters();
+
+};
+
+
+box.appendChild(
+btn
+);
+
+}
+);
+
+}
+
+
+/* =========================================================
+   BUILD CATEGORY CHIPS
+   ========================================================= */
+
+function buildCategoryChips(){
+
+const box =
+$("categoryChips");
+
+
+if(!box){
+
+return;
+
+}
+
+
+const values =
+uniqueMultiValues(
+allNewspapers,
+"category"
+);
+
+
+box.innerHTML = "";
+
+
+const allBtn =
+document.createElement("button");
+
+
+allBtn.className =
+"chip";
+
+
+allBtn.textContent =
+"সব";
+
+
+allBtn.onclick =
+function(){
+
+currentCategory =
+"";
+
+currentPage =
+1;
+
+$("fCategory").value =
+"";
+
+applyFilters();
+
+};
+
+
+if(!currentCategory){
+
+allBtn.classList.add(
+"active"
+);
+
+}
+
+
+box.appendChild(
+allBtn
+);
+
+
+values.forEach(
+value => {
+
+const btn =
+document.createElement("button");
+
+
+btn.className =
+"chip";
+
+
+if(
+norm(value) ===
+norm(currentCategory)
+){
+
+btn.classList.add(
+"active"
+);
+
+}
+
+
+btn.textContent =
+value;
+
+
+btn.onclick =
+function(){
+
+currentCategory =
+value;
+
+currentPage =
+1;
+
+$("fCategory").value =
+value;
+
+
+buildCategoryChips();
+
+applyFilters();
+
+};
+
+
+box.appendChild(
+btn
+);
+
+}
+);
+
+}
+
+
+/* =========================================================
+   BUILD DIVISION
+   ========================================================= */
+
+function buildDivisionCards(){
+
+const box =
+$("divisionGrid");
+
+
+if(!box){
+
+return;
+
+}
+
+
+const values =
+uniqueValues(
+allNewspapers,
+"division"
+);
+
+
+if(!values.length){
+
+box.innerHTML =
+`
+<div class="empty">
+বিভাগের তথ্য পাওয়া যায়নি।
+</div>
+`;
+
+return;
+
+}
+
+
+box.innerHTML = "";
+
+
+values.forEach(
+division => {
+
+const count =
+allNewspapers.filter(
+item =>
+norm(
+getField(item,"division")
+) === norm(division)
+).length;
+
+
+const button =
+document.createElement("button");
+
+
+button.className =
+"division";
+
+
+button.innerHTML =
+`
+${esc(division)}
+<span>
+${count}টি পত্রিকা
+</span>
+`;
+
+
+button.onclick =
+function(){
+
+currentDivision =
+division;
+
+currentPage =
+1;
+
+
+if($("fDivision")){
+
+$("fDivision").value =
+division;
+
+}
+
+
+applyFilters();
+
+
+document
+.querySelector("#allGrid")
+?.scrollIntoView(
+{
+behavior:"smooth",
+block:"start"
+}
+);
+
+};
+
+
+box.appendChild(
+button
+);
+
+}
+);
+
+}
+
+
+/* =========================================================
+   BUILD FILTER OPTIONS
+   ========================================================= */
+
+function buildFilterOptions(){
+
+fillSelect(
+$("fFrequency"),
+uniqueValues(
+allNewspapers,
+"frequency"
+),
+"সব প্রকাশনা",
+currentFrequency
+);
+
+
+fillSelect(
+$("fCategory"),
+uniqueMultiValues(
+allNewspapers,
+"category"
+),
+"সব ক্যাটাগরি",
+currentCategory
+);
+
+
+fillSelect(
+$("fDivision"),
+uniqueValues(
+allNewspapers,
+"division"
+),
+"সব বিভাগ",
+currentDivision
+);
+
+
+fillSelect(
+$("fFrequency2"),
+uniqueValues(
+allNewspapers,
+"frequency"
+),
+"সব প্রকাশনা",
+currentFrequency
+);
+
+
+fillSelect(
+$("fCategory2"),
+uniqueMultiValues(
+allNewspapers,
+"category"
+),
+"সব ক্যাটাগরি",
+currentCategory
+);
+
+
+fillSelect(
+$("fDivision2"),
+uniqueValues(
+allNewspapers,
+"division"
+),
+"সব বিভাগ",
+currentDivision
+);
+
+}
+
+
+/* =========================================================
+   FILL SELECT
+   ========================================================= */
+
+function fillSelect(
+select,
+values,
+placeholder,
+selected
+){
+
+if(!select){
+
+return;
+
+}
+
+
+select.innerHTML = "";
+
+
+const first =
+document.createElement("option");
+
+
+first.value =
+"";
+
+first.textContent =
+placeholder;
+
+
+select.appendChild(
+first
+);
+
+
+values.forEach(
+value => {
+
+const option =
+document.createElement("option");
+
+
+option.value =
+value;
+
+option.textContent =
+value;
+
+
+if(
+norm(value) ===
+norm(selected)
+){
+
+option.selected =
+true;
+
+}
+
+
+select.appendChild(
+option
+);
+
+}
+);
+
+}
+
+
+/* =========================================================
+   UNIQUE VALUES
+   ========================================================= */
+
+function uniqueValues(
+items,
+key
+){
+
+const map =
+new Map();
+
+
+items.forEach(
+item => {
+
+const value =
+getField(
+item,
+key
+);
+
+
+if(!value){
+
+return;
+
+}
+
+
+const n =
+norm(value);
+
+
+if(!map.has(n)){
+
+map.set(
+n,
+value
+);
+
+}
+
+}
+);
+
+
+return Array.from(
+map.values()
+).sort(
+(a,b)=>
+a.localeCompare(
+b,
+"bn"
+)
+);
+
+}
+
+
+/* =========================================================
+   UNIQUE MULTI VALUES
+   ========================================================= */
+
+function uniqueMultiValues(
+items,
+key
+){
+
+const map =
+new Map();
+
+
+items.forEach(
+item => {
+
+const values =
+splitValues(
+getField(
+item,
+key
+)
+);
+
+
+values.forEach(
+value => {
+
+const n =
+norm(value);
+
+
+if(!map.has(n)){
+
+map.set(
+n,
+value
+);
+
+}
+
+}
+);
+
+}
+);
+
+
+return Array.from(
+map.values()
+).sort(
+(a,b)=>
+a.localeCompare(
+b,
+"bn"
+)
+);
+
+}
+
+
+/* =========================================================
+   BUILD POPULAR
+   ========================================================= */
+
+function buildPopularSection(){
+
+const box =
+$("popularGrid");
+
+
+if(!box){
+
+return;
+
+}
+
+
+if(!allNewspapers.length){
+
+box.innerHTML =
+`
+<div class="empty">
+এখনও কোনো পত্রিকার তথ্য পাওয়া যায়নি।
+</div>
+`;
+
+return;
+
+}
+
+
+/*
+   প্রথম কয়েকটি data-কে জনপ্রিয় হিসেবে দেখানো হচ্ছে।
+   ভবিষ্যতে Sheet-এ আলাদা Popular field দিলে
+   এটিকে সহজেই পরিবর্তন করা যাবে।
+*/
+
+const popular =
+allNewspapers
+.slice(0,8);
+
+
+renderGrid(
+"popularGrid",
+popular
+);
+
+}
+
+
+/* =========================================================
+   FOOTER CATEGORIES
+   ========================================================= */
+
+function buildFooterCategories(){
+
+const box =
+$("footerCategories");
+
+
+if(!box){
+
+return;
+
+}
+
+
+const categories =
+uniqueMultiValues(
+allNewspapers,
+"category"
+).slice(0,10);
+
+
+box.innerHTML = "";
+
+
+categories.forEach(
+category => {
+
+const a =
+document.createElement("a");
+
+
+a.href =
+"#";
+
+
+a.textContent =
+category;
+
+
+a.onclick =
+function(e){
+
+e.preventDefault();
+
+
+currentCategory =
+category;
+
+currentPage =
+1;
+
+
+if($("fCategory")){
+
+$("fCategory").value =
+category;
+
+}
+
+
+goHome();
+
+
+setTimeout(
+()=>{
+applyFilters();
+},
+50
+);
+
+};
+
+
+box.appendChild(
+a
+);
+
+}
+);
+
+}
+
+
+/* =========================================================
+   APPLY FILTERS
+   ========================================================= */
+
+function applyFilters(){
+
+currentFrequency =
+$("fFrequency")
+?.value ||
+currentFrequency ||
+"";
+
+
+currentCategory =
+$("fCategory")
+?.value ||
+currentCategory ||
+"";
+
+
+currentDivision =
+$("fDivision")
+?.value ||
+currentDivision ||
+"";
+
+
+filtered =
+allNewspapers.filter(
+item => {
+
+const frequency =
+norm(
+getField(
+item,
+"frequency"
+)
+);
+
+
+const categoryValues =
+splitValues(
+getField(
+item,
+"category"
+)
+)
+.map(norm);
+
+
+const division =
+norm(
+getField(
+item,
+"division"
+)
+);
+
+
+if(
+currentFrequency &&
+frequency !==
+norm(currentFrequency)
+){
+
+return false;
+
+}
+
+
+if(
+currentCategory &&
+!categoryValues.includes(
+norm(currentCategory)
+)
+){
+
+return false;
+
+}
+
+
+if(
+currentDivision &&
+division !==
+norm(currentDivision)
+){
+
+return false;
+
+}
+
+
+return true;
+
+}
+);
+
+
+const start =
+(currentPage - 1) *
+PER_PAGE;
+
+
+const pageItems =
+filtered.slice(
+start,
+start + PER_PAGE
+);
+
+
+renderGrid(
+"allGrid",
+pageItems
+);
+
+
+renderPagination(
+"allPagination",
+filtered.length
+);
+
+
+renderAllSecond();
+
+}
+
+
+/* =========================================================
+   SECOND ALL VIEW
+   ========================================================= */
+
+function renderAllSecond(){
+
+const box =
+$("allGrid2");
+
+
+if(!box){
+
+return;
+
+}
+
+
+const total =
+filtered.length;
+
+
+const start =
+(currentPage - 1) *
+PER_PAGE;
+
+
+const items =
+filtered.slice(
+start,
+start + PER_PAGE
+);
+
+
+renderGrid(
+"allGrid2",
+items
+);
+
+
+renderPagination(
+"allPagination2",
+total
+);
+
+
+if($("fFrequency2")){
+
+$("fFrequency2").value =
+currentFrequency;
+
+}
+
+
+if($("fCategory2")){
+
+$("fCategory2").value =
+currentCategory;
+
+}
+
+
+if($("fDivision2")){
+
+$("fDivision2").value =
+currentDivision;
+
+}
+
+}
+
+
+/* =========================================================
+   SYNC FILTER
+   ========================================================= */
+
+function syncFilter(
+name,
+value
+){
+
+const source =
+$(name);
+
+
+if(source){
+
+source.value =
+value;
+
+}
+
+
+if(name === "fFrequency"){
+
+currentFrequency =
+value;
+
+}
+
+
+if(name === "fCategory"){
+
+currentCategory =
+value;
+
+}
+
+
+if(name === "fDivision"){
+
+currentDivision =
+value;
+
+}
+
+
+currentPage =
+1;
+
+
+buildFrequencyChips();
+
+buildCategoryChips();
+
+applyFilters();
+
+}
+
+
+/* =========================================================
+   RENDER GRID
+   ========================================================= */
+
+function renderGrid(
+containerId,
+items
+){
+
+const box =
+$(containerId);
+
+
+if(!box){
+
+return;
+
+}
+
+
+if(!items || !items.length){
+
+box.innerHTML =
+`
+<div class="empty">
+
+<h3>
+কোনো পত্রিকা পাওয়া যায়নি
+</h3>
+
+<p>
+আপনার নির্বাচিত তথ্য অনুযায়ী কোনো পত্রিকা পাওয়া যায়নি।
+</p>
+
+<button
+class="btn primary"
+onclick="resetFilters()"
+>
+ফিল্টার পরিষ্কার করুন
+</button>
+
+</div>
+`;
+
+return;
+
+}
+
+
+box.innerHTML =
+items
+.map(
+item =>
+cardHTML(item)
+)
+.join("");
+
+}
+
+
+/* =========================================================
+   CARD HTML
+   ========================================================= */
+
+function cardHTML(item){
+
+const name =
+getField(
+item,
+"name"
+) ||
+"নামহীন পত্রিকা";
+
+
+const logo =
+normalizeImageUrl(
+getField(
+item,
+"logo"
+)
+);
+
+
+const frequency =
+getField(
+item,
+"frequency"
+);
+
+
+const category =
+getField(
+item,
+"category"
+);
+
+
+const division =
+getField(
+item,
+"division"
+);
+
+
+const district =
+getField(
+item,
+"district"
+);
+
+
+const description =
+getField(
+item,
+"description"
+);
+
+
+const id =
+getField(
+item,
+"id"
+);
+
+
+const image =
+logo
+?
+`
+<img
+src="${esc(logo)}"
+alt="${esc(name)}"
+loading="lazy"
+referrerpolicy="no-referrer"
+onerror="imageFallback(this,'${attr(name)}')"
+>
+`
+:
+`
+<div class="placeholder">
+${esc(firstName(name))}
+</div>
+`;
+
+
+const badges =
+[
+frequency,
+category,
+division,
+district
+]
+.filter(Boolean)
+.slice(0,4)
+.map(
+value =>
+`
+<span class="badge">
+${esc(value)}
+</span>
+`
+)
+.join("");
+
+
+const shortDesc =
+description
+?
+esc(description)
+:
+"এই পত্রিকার বিস্তারিত তথ্য দেখতে বিস্তারিত দেখুন।";
+
+
+return `
+<article
+class="card"
+data-id="${esc(id)}"
+>
+
+<div class="logo">
+
+${image}
+
+</div>
+
+
+<div class="cardBody">
+
+<h3>
+${esc(name)}
+</h3>
+
+
+<div class="meta">
+
+${badges}
+
+</div>
+
+
+<div class="desc">
+${shortDesc}
+</div>
+
+
+<button
+class="cardBtn"
+onclick="openDetailsById('${attr(id)}')"
+>
+বিস্তারিত দেখুন
+</button>
+
+
+<button
+class="cardBtn"
+onclick="openReadById('${attr(id)}')"
+>
+পত্রিকাটি পড়ুন
+</button>
+
+
+</div>
+
+</article>
+`;
+
+}
+
+
+/* =========================================================
+   FIND ITEM BY ID
+   ========================================================= */
+
+function findById(id){
+
+const target =
+String(id ?? "").trim();
+
+
+return allNewspapers.find(
+item =>
+String(
+getField(item,"id")
+).trim() === target
+);
+
+}
+
+
+/* =========================================================
+   OPEN DETAILS
+   ========================================================= */
+
+function openDetailsById(id){
+
+const item =
+findById(id);
+
+
+if(!item){
+
+showToast(
+"পত্রিকার তথ্য পাওয়া যায়নি।"
+);
+
+return;
+
+}
+
+
+openDetails(item);
+
+}
+
+
+/* =========================================================
+   DETAILS
+   ========================================================= */
+
+function openDetails(item){
+
+const modal =
+$("modal");
+
+
+const detail =
+$("detail");
+
+
+if(!modal || !detail){
+
+return;
+
+}
+
+
+const name =
+getField(item,"name") ||
+"পত্রিকা";
+
+
+const logo =
+normalizeImageUrl(
+getField(item,"logo")
+);
+
+
+const description =
+getField(item,"description");
+
+
+const website =
+safeUrl(
+getField(item,"website")
+);
+
+
+const pdf =
+safeUrl(
+getField(item,"pdf")
+);
+
+
+const frequency =
+getField(item,"frequency");
+
+
+const category =
+getField(item,"category");
+
+
+const language =
+getField(item,"language");
+
+
+const country =
+getField(item,"country");
+
+
+const division =
+getField(item,"division");
+
+
+const district =
+getField(item,"district");
+
+
+const upazila =
+getField(item,"upazila");
+
+
+const regno =
+getField(item,"regno");
+
+
+const tags =
+splitValues(
+getField(item,"tags")
+);
+
+
+const logoHTML =
+logo
+?
+`
+<img
+src="${esc(logo)}"
+alt="${esc(name)}"
+referrerpolicy="no-referrer"
+onerror="imageFallback(this,'${attr(name)}')"
+>
+`
+:
+`
+<div class="placeholder">
+${esc(firstName(name))}
+</div>
+`;
+
+
+const infoItems = [
+
+["প্রকাশনা",frequency],
+
+["ক্যাটাগরি",category],
+
+["ভাষা",language],
+
+["দেশ",country],
+
+["বিভাগ",division],
+
+["জেলা",district],
+
+["উপজেলা/থানা",upazila],
+
+["রেজিস্ট্রেশন",regno]
+
+]
+.filter(
+x => x[1]
+);
+
+
+const infoHTML =
+infoItems.length
+?
+`
+<div class="infoGrid">
+
+${infoItems
+.map(
+x =>
+`
+<div class="info">
+
+<b>
+${esc(x[0])}
+</b>
+
+<span>
+${esc(x[1])}
+</span>
+
+</div>
+`
+)
+.join("")}
+
+</div>
+`
+:
+"";
+
+
+const descriptionHTML =
+`
+<div class="descriptionBlock">
+
+<h3>
+সংক্ষিপ্ত বিবরণ
+</h3>
+
+
+<div class="descriptionText">
+
+${
+description
+?
+esc(description)
+:
+"এই পত্রিকার সংক্ষিপ্ত বিবরণ বর্তমানে যুক্ত করা হয়নি।"
+}
+
+</div>
+
+</div>
+`;
+
+
+/*
+   Description-এর পরে actions
+*/
+
+const actionsHTML =
+`
+<div class="actions">
+
+
+${
+website
+?
+`
+<button
+class="btn readBtn"
+onclick="openExternal('${attr(website)}','${attr(name)}')"
+>
+পত্রিকাটি পড়ুন
+</button>
+`
+:
+""
+}
+
+
+${
+pdf
+?
+`
+<a
+class="btn pdfBtn"
+href="${esc(pdf)}"
+target="_blank"
+rel="noopener"
+>
+PDF দেখুন
+</a>
+`
+:
+""
+}
+
+
+<button
+class="btn shareBtn"
+onclick="shareNewspaper('${attr(name)}','${attr(website)}')"
+>
+শেয়ার করুন
+</button>
+
+
+</div>
+`;
+
+
+/*
+   Correction card
+*/
+
+const correctionHTML =
+`
+<div class="correctionCard">
+
+<h3>
+তথ্য সংশোধনে সহযোগিতা করুন
+</h3>
+
+
+<p>
+এই পত্রিকার কোনো তথ্য ভুল, পুরোনো বা অসম্পূর্ণ মনে হলে আমাদের জানাতে পারেন। আপনার সহযোগিতায় পত্রিকা সমাহারের তথ্য আরও নির্ভুল ও সমৃদ্ধ হবে।
+</p>
+
+
+<a
+class="btn primary"
+href="${FORM_URL}"
+target="_blank"
+rel="noopener"
+>
+তথ্য সংশোধন পাঠান
+</a>
+
+</div>
+`;
+
+
+/*
+   Tags
+*/
+
+const tagsHTML =
+tags.length
+?
+`
+<div class="tags">
+
+${tags
+.map(
+tag =>
+`
+<span class="tag">
+#${esc(tag)}
+</span>
+`
+)
+.join("")}
+
+</div>
+`
+:
+"";
+
+
+detail.innerHTML =
+`
+
+<div class="detailHead">
+
+
+<div class="detailLogo">
+
+${logoHTML}
+
+</div>
+
+
+<div>
+
+<h2>
+${esc(name)}
+</h2>
+
+
+<div class="meta">
+
+${
+frequency
+?
+`<span class="badge">${esc(frequency)}</span>`
+:
+""
+}
+
+${
+category
+?
+`<span class="badge">${esc(category)}</span>`
+:
+""
+}
+
+${
+division
+?
+`<span class="badge">${esc(division)}</span>`
+:
+""
+}
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<div class="detailBody">
+
+
+${infoHTML}
+
+
+${descriptionHTML}
+
+
+${actionsHTML}
+
+
+${correctionHTML}
+
+
+${tagsHTML}
+
+
+</div>
+
+`;
+
+
+modal.classList.add(
+"open"
+);
+
+
+document.body.style.overflow =
+"hidden";
+
+}
+
+
+/* =========================================================
+   CLOSE DETAILS
+   ========================================================= */
+
+function closeModal(){
+
+const modal =
+$("modal");
+
+
+if(modal){
+
+modal.classList.remove(
+"open"
+);
+
+}
+
+
+if(
+!$("externalModal").classList.contains("open")
+){
+
+document.body.style.overflow =
+"";
+
+}
+
+}
+
+
+/* =========================================================
+   OPEN READ BY ID
+   ========================================================= */
+
+function openReadById(id){
+
+const item =
+findById(id);
+
+
+if(!item){
+
+showToast(
+"পত্রিকার তথ্য পাওয়া যায়নি।"
+);
+
+return;
+
+}
+
+
+const website =
+safeUrl(
+getField(
+item,
+"website"
+)
+);
+
+
+if(!website){
+
+showToast(
+"এই পত্রিকার ওয়েবসাইটের লিংক দেওয়া হয়নি।"
+);
+
+return;
+
+}
+
+
+openExternal(
+website,
+getField(item,"name")
+);
+
+}
+
+
+/* =========================================================
+   EXTERNAL WEBSITE MODAL
+   ========================================================= */
+
+function openExternal(
+url,
+name
+){
+
+const safe =
+safeUrl(url);
+
+
+if(!safe){
+
+showToast(
+"সঠিক ওয়েবসাইট লিংক পাওয়া যায়নি।"
+);
+
+return;
+
+}
+
+
+pendingExternalUrl =
+safe;
+
+
+pendingExternalName =
+name ||
+"পত্রিকা";
+
+
+$("externalUrl").textContent =
+safe;
+
+
+$("externalModal").classList.add(
+"open"
+);
+
+
+document.body.style.overflow =
+"hidden";
+
+}
+
+
+/* =========================================================
+   CLOSE EXTERNAL
+   ========================================================= */
+
+function closeExternalModal(){
+
+$("externalModal")
+.classList.remove(
+"open"
+);
+
+
+pendingExternalUrl =
+"";
+
+
+pendingExternalName =
+"";
+
+
+if(
+!$("modal").classList.contains("open")
+){
+
+document.body.style.overflow =
+"";
+
+}
+
+}
+
+
+/* =========================================================
+   CONTINUE EXTERNAL
+   ========================================================= */
+
+function continueExternal(){
+
+if(!pendingExternalUrl){
+
+return;
+
+}
+
+
+const url =
+pendingExternalUrl;
+
+
+closeExternalModal();
+
+
+window.open(
+url,
+"_blank",
+"noopener,noreferrer"
+);
+
+}
+
+
+/* =========================================================
+   SHARE
+   ========================================================= */
+
+async function shareNewspaper(
+name,
+website
+){
+
+const safe =
+safeUrl(website);
+
+
+const shareUrl =
+safe ||
+location.href;
+
+
+const shareData = {
+
+title:
+name || "পত্রিকা সমাহার",
+
+text:
+(name || "এই পত্রিকা") +
+" — পত্রিকা সমাহার",
+
+url:
+shareUrl
+
+};
+
+
+try{
+
+if(
+navigator.share
+){
+
+await navigator.share(
+shareData
+);
+
+}else{
+
+await navigator.clipboard.writeText(
+shareUrl
+);
+
+showToast(
+"লিংক কপি হয়েছে।"
+);
+
+}
+
+}catch(error){
+
+/*
+   User cancelled share.
+*/
+
+}
+
+}
+
+
+/* =========================================================
+   RESET FILTERS
+   ========================================================= */
+
+function resetFilters(){
+
+currentFrequency =
+"";
+
+currentCategory =
+"";
+
+currentDivision =
+"";
+
+currentSearch =
+"";
+
+currentPage =
+1;
+
+
+if($("fFrequency")){
+
+$("fFrequency").value =
+"";
+
+}
+
+
+if($("fCategory")){
+
+$("fCategory").value =
+"";
+
+}
+
+
+if($("fDivision")){
+
+$("fDivision").value =
+"";
+
+}
+
+
+if($("heroSearch")){
+
+$("heroSearch").value =
+"";
+
+}
+
+
+if($("searchInput")){
+
+$("searchInput").value =
+"";
+
+}
+
+
+buildFrequencyChips();
+
+buildCategoryChips();
+
+applyFilters();
+
+}
+
+
+/* =========================================================
+   PAGINATION
+   ========================================================= */
+
+function renderPagination(
+containerId,
+total
+){
+
+const box =
+$(containerId);
+
+
+if(!box){
+
+return;
+
+}
+
+
+const pages =
+Math.ceil(
+total / PER_PAGE
+);
+
+
+box.innerHTML = "";
+
+
+if(pages <= 1){
+
+return;
+
+}
+
+
+/*
+   Previous
+*/
+
+if(currentPage > 1){
+
+const prev =
+document.createElement("button");
+
+
+prev.className =
+"page";
+
+
+prev.textContent =
+"‹";
+
+
+prev.onclick =
+function(){
+
+currentPage--;
+
+applyFilters();
+
+scrollToResults();
+
+};
+
+
+box.appendChild(
+prev
+);
+
+}
+
+
+/*
+   Page numbers
+*/
+
+const maxButtons =
+7;
+
+
+let start =
+Math.max(
+1,
+currentPage - 3
+);
+
+
+let end =
+Math.min(
+pages,
+start + maxButtons - 1
+);
+
+
+if(
+end - start <
+maxButtons - 1
+){
+
+start =
+Math.max(
+1,
+end - maxButtons + 1
+);
+
+}
+
+
+for(
+let i=start;
+i<=end;
+i++
+){
+
+const btn =
+document.createElement("button");
+
+
+btn.className =
+"page";
+
+
+if(
+i === currentPage
+){
+
+btn.classList.add(
+"active"
+);
+
+}
+
+
+btn.textContent =
+i;
+
+
+btn.onclick =
+function(){
+
+currentPage =
+i;
+
+applyFilters();
+
+scrollToResults();
+
+};
+
+
+box.appendChild(
+btn
+);
+
+}
+
+
+/*
+   Next
+*/
+
+if(currentPage < pages){
+
+const next =
+document.createElement("button");
+
+
+next.className =
+"page";
+
+
+next.textContent =
+"›";
+
+
+next.onclick =
+function(){
+
+currentPage++;
+
+applyFilters();
+
+scrollToResults();
+
+};
+
+
+box.appendChild(
+next
+);
+
+}
+
+}
+
+
+/* =========================================================
+   SCROLL TO RESULTS
+   ========================================================= */
+
+function scrollToResults(){
+
+const target =
+$("allGrid");
+
+
+if(target){
+
+setTimeout(
+()=>{
+target.scrollIntoView(
+{
+behavior:"smooth",
+block:"start"
+}
+);
+},
+50
+);
+
+}
+
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+let toastTimer;
+
+
+function showToast(text){
+
+const toast =
+$("toast");
+
+
+if(!toast){
+
+return;
+
+}
+
+
+toast.textContent =
+text;
+
+
+toast.classList.add(
+"show"
+);
+
+
+clearTimeout(
+toastTimer
+);
+
+
+toastTimer =
+setTimeout(
+()=>{
+toast.classList.remove(
+"show"
+);
+},
+2500
+);
+
+}
+
+
+/* =========================================================
+   KEYBOARD ESC
+   ========================================================= */
+
+document.addEventListener(
+"keydown",
+function(event){
+
+if(
+event.key === "Escape"
+){
+
+closeDrawer();
+
+closeModal();
+
+closeExternalModal();
+
+}
+
+}
+);
+
+
+/* =========================================================
+   CLICK OUTSIDE / DRAWER
+   ========================================================= */
+
+document.addEventListener(
+"click",
+function(event){
+
+const drawer =
+$("drawer");
+
+
+if(
+drawer &&
+drawer.classList.contains("open")
+){
+
+const panel =
+drawer.querySelector(
+".drawerPanel"
+);
+
+
+if(
+panel &&
+!panel.contains(event.target) &&
+!event.target.closest(
+'[onclick="openDrawer()"]'
+)
+){
+
+closeDrawer();
+
+}
+
+}
+
+}
+);
+
+
+/* =========================================================
+   LOAD DATA ON START
+   ========================================================= */
+
+document.addEventListener(
+"DOMContentLoaded",
+function(){
+
+loadTheme();
+
+
+$("year").textContent =
+new Date().getFullYear();
+
+
+loadNewspapers();
+
+}
+);
+
+
+/* =========================================================
+   ONLINE / OFFLINE STATUS
+   ========================================================= */
+
+window.addEventListener(
+"online",
+function(){
+
+setStatus(
+"ইন্টারনেট সংযোগ পাওয়া গেছে।"
+);
+
+loadNewspapers();
+
+}
+);
+
+
+window.addEventListener(
+"offline",
+function(){
+
+setStatus(
+"আপনার ইন্টারনেট সংযোগ নেই।"
+);
+
+}
+);
+
+
+/* =========================================================
+   PREVENT BROKEN IMAGE URLs FROM BREAKING CARD
+   ========================================================= */
+
+document.addEventListener(
+"error",
+function(event){
+
+const target =
+event.target;
+
+
+if(
+target &&
+target.tagName === "IMG"
+){
+
+const name =
+target.alt ||
+"প";
+
+
+imageFallback(
+target,
+name
+);
+
+}
+
+},
+true
+);
+
+
+/* =========================================================
+   URL HASH SUPPORT
+   ========================================================= */
+
+function handleHash(){
+
+const hash =
+location.hash;
+
+
+if(hash === "#about"){
+
+showAbout();
+
+return;
+
+}
+
+
+if(hash === "#all"){
+
+showAll();
+
+return;
+
+}
+
+
+if(hash === "#search"){
+
+focusSearch();
+
+return;
+
+}
+
+
+goHome();
+
+}
+
+
+window.addEventListener(
+"hashchange",
+handleHash
+);
+
+
+/* =========================================================
+   FINAL SAFETY:
+   If a Sheet row has website but no http,
+   safeUrl() fixes it.
+   ========================================================= */
+
+
+/* =========================================================
+   OPTIONAL: ENTER KEY SEARCH
+   ========================================================= */
+
+document.addEventListener(
+"keydown",
+function(event){
+
+if(
+event.key !== "Enter"
+){
+
+return;
+
+}
+
+
+const active =
+document.activeElement;
+
+
+if(
+active === $("heroSearch")
+){
+
+runSearch(
+active.value
+);
+
+}
+
+
+if(
+active === $("searchInput")
+){
+
+runSearch(
+active.value
+);
+
+}
+
+}
+);
+
+
+/* =========================================================
+   END
+   ========================================================= */
+
+</script>
+
+
+<!-- =========================================================
+     GOOGLE TRANSLATE SCRIPT
+     ========================================================= -->
+
+<script
+src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+></script>
+
+
+</body>
+</html>
